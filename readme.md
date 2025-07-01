@@ -1,12 +1,12 @@
 <!-- Banner with Logo, Stack, and Designer Info -->
 <p align="center">
-  <img src="static/images/logo.png" alt="Lussoux Hairs Logo" width="90" style="border-radius:50%;box-shadow:0 2px 8px #ccc;">
+  <img src="static/images/logo.png" alt="Maphixz Global Logo" width="90" style="border-radius:50%;box-shadow:0 2px 8px #ccc;">
 </p>
 
-<h1 align="center">Lussoux Ecommerce</h1>
+<h1 align="center">Maphixz Global Ecommerce</h1>
 
 <p align="center">
-  <b>Premium Hair Extensions & Wigs Store</b><br>
+  <b>Premium Laptops & Accessories Store</b><br>
   <span>
     <img src="https://img.shields.io/badge/Django-4%2B-green?logo=django" alt="Django">
     <img src="https://img.shields.io/badge/TailwindCSS-3%2B-blue?logo=tailwindcss" alt="TailwindCSS">
@@ -33,9 +33,9 @@
 ## Features
 
 - **Modern UI**: Responsive, elegant design using Tailwind CSS and Bootstrap.
-- **Product Catalog**: Browse, search, and filter premium hair products by category.
-- **Categories**: Brazilian Hair, Peruvian Hair, Wigs, Closures, and more.
-- **Product Details**: High-quality images, videos, and detailed descriptions.
+- **Product Catalog**: Browse, search, and filter premium laptops and accessories by category.
+- **Categories**: Laptops, Accessories, Brands, and more.
+- **Product Details**: High-quality images, videos, and detailed specifications.
 - **Shopping Cart**: Add, update, and remove products from the cart.
 - **Checkout**: Secure order placement with multiple payment and delivery options.
 - **Custom Admin Portal**: Manage products, categories, orders, and analytics.
@@ -60,8 +60,8 @@
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/lussoux-ecommerce.git
-cd lussoux-ecommerce
+git clone https://github.com/yourusername/maphixz-global.git
+cd maphixz-global
 ```
 
 ### 2. Create and Activate a Virtual Environment
@@ -120,10 +120,9 @@ from store.models import Category
 from django.utils.text import slugify
 
 category_names = [
-    "Brazilian Hair",
-    "Peruvian Hair",
-    "Wigs",
-    "Closures"
+    "Laptops",
+    "Accessories",
+    "Brands"
 ]
 
 for name in category_names:
@@ -138,7 +137,7 @@ for name in category_names:
 ## Project Structure
 
 ```
-lussox-ecommerce/
+maphixz-global/
 ├── manage.py
 ├── requirements.txt
 ├── store/
@@ -173,7 +172,7 @@ lussox-ecommerce/
 
 - **Branding:** Update `base.html` and static assets for your brand.
 - **Categories:** Add or edit categories in the Django admin or via shell.
-- **Products:** Add products with images and videos via the admin portal.
+- **Products:** Add laptops and accessories with images and videos via the admin portal.
 - **Contact Info:** Update footer and contact page with your business details.
 
 ---
@@ -181,7 +180,7 @@ lussox-ecommerce/
 ## Admin Portal
 
 - Visit `/admin/` for Django's default admin.
-- Visit `/lussoux-admin/` (or your custom admin URL) for the custom admin dashboard.
+- Visit `/maphixz-admin/` (or your custom admin URL) for the custom admin dashboard.
 - Only staff or superusers can access admin features.
 
 ---
@@ -213,7 +212,7 @@ This project is licensed under the MIT License.
 
 ## Contact
 
-For support or business inquiries , email: **hello@lussouxhairs.com**
+For support or business inquiries, email: **hello@maphixzglobal.com**
 
 ---
 
