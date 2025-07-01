@@ -1,0 +1,341 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="container mx-auto px-4 py-8 max-w-7xl">
+    <!-- Cart Header -->
+    <div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-light-100">Your Tech Cart</h1>
+            <p class="text-gray-500 dark:text-light-500 mt-1">
+                {% if cart_items %}
+                    {{ cart.total_items }} item{% if cart.total_items != 1 %}s{% endif %} in your cart
+                {% else %}
+                    Your cart is empty
+                {% endif %}
+            </p>
+        </div>
+        <a href="{% url 'store:product_list' %}" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg flex items-center whitespace-nowrap transition-colors">
+            <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+            </svg>
+            Continue Shopping
+        </a>
+    </div>
+
+    {% if cart_items %}
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Cart Items Column -->
+            <div class="lg:col-span-2 space-y-6">
+                {% for item in cart_items %}
+                <div class="bg-white dark:bg-dark-700 rounded-xl shadow-sm overflow-hidden flex flex-col sm:flex-row border border-gray-200 dark:border-dark-600 hover:shadow-md transition duration-200 relative group">
+                    <!-- Product Image with Tech Badges -->
+                    <div class="w-full sm:w-40 h-48 sm:h-40 flex-shrink-0 relative bg-gray-50 dark:bg-dark-600">
+                        {% if item.product.image %}
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="w-full h-full object-contain p-4">
+                        {% else %}
+                            <div class="w-full h-full flex items-center justify-center text-gray-400 dark:text-dark-400">
+                                <i class="fas fa-laptop text-4xl"></i>
+                            </div>
+                        {% endif %}
+                        
+                        <div class="absolute top-2 left-2 flex flex-col space-y-1">
+                            {% if item.product.discount_price %}
+                            <span class="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                                SALE
+                            </span>
+                            {% endif %}
+                            {% if item.product.is_refurbished %}
+                            <span class="bg-purple-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                                REFURBISHED
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <!-- Product Details -->
+                    <div class="p-4 flex-grow flex flex-col">
+                        <div class="flex-grow">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 class="font-semibold text-lg text-gray-900 dark:text-light-100 mb-1">{{ item.product.name }}</h3>
+                                    <div class="flex items-center space-x-2 mb-2">
+                                        {% if item.product.brand %}
+                                        <span class="text-xs font-medium px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded">
+                                            {{ item.product.brand }}
+                                        </span>
+                                        {% endif %}
+                                        <span class="text-xs text-gray-500 dark:text-light-500">{{ item.product.category.name }}</span>
+                                    </div>
+                                </div>
+                                <span class="font-semibold text-gray-900 dark:text-light-100 sm:hidden">${{ item.subtotal }}</span>
+                            </div>
+                            
+                            <!-- Tech Specs Preview -->
+                            <div class="grid grid-cols-2 gap-2 text-xs text-gray-600 dark:text-light-500 mb-3">
+                                {% if item.product.processor %}
+                                <div class="flex items-center">
+                                    <svg class="w-3 h-3 mr-1 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                    </svg>
+                                    {{ item.product.processor|truncatechars:20 }}
+                                </div>
+                                {% endif %}
+                                {% if item.product.ram %}
+                                <div class="flex items-center">
+                                    <svg class="w-3 h-3 mr-1 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                    </svg>
+                                    {{ item.product.ram }}
+                                </div>
+                                {% endif %}
+                                {% if item.product.storage %}
+                                <div class="flex items-center">
+                                    <svg class="w-3 h-3 mr-1 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V5z"></path>
+                                    </svg>
+                                    {{ item.product.storage }}
+                                </div>
+                                {% endif %}
+                                {% if item.product.graphics %}
+                                <div class="flex items-center">
+                                    <svg class="w-3 h-3 mr-1 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path>
+                                    </svg>
+                                    {{ item.product.graphics|truncatechars:12 }}
+                                </div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Price and Stock -->
+                            <div class="flex items-center mb-3">
+                                {% if item.product.discount_price %}
+                                <span class="text-lg font-bold text-gray-900 dark:text-light-100">${{ item.product.discount_price }}</span>
+                                <span class="text-sm text-gray-400 dark:text-dark-400 line-through ml-2">${{ item.product.price }}</span>
+  
+                                {% else %}
+                                <span class="text-lg font-bold text-gray-900 dark:text-light-100">${{ item.product.price }}</span>
+                                {% endif %}
+                            </div>
+                            
+                            {% if item.product.stock_status == 'out_of_stock' %}
+                            <span class="inline-block bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-xs px-2 py-1 rounded mb-3">
+                                <i class="fas fa-exclamation-circle mr-1"></i> Backordered - Ships when available
+                            </span>
+                            {% elif item.product.stock_status == 'limited' %}
+                            <span class="inline-block bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs px-2 py-1 rounded mb-3">
+                                <i class="fas fa-info-circle mr-1"></i> Only {{ item.product.stock_quantity }} left in stock
+                            </span>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Quantity and Actions -->
+                        <div class="flex items-center justify-between">
+                            <form method="POST" action="{% url 'store:update_cart' item.id %}" class="flex items-center">
+                                {% csrf_token %}
+                                <div class="flex border border-gray-300 dark:border-dark-600 rounded-lg overflow-hidden bg-gray-50 dark:bg-dark-800">
+                                    <button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown()" 
+                                            class="px-3 py-1 bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 transition text-gray-600 dark:text-light-400">
+                                        <i class="fas fa-minus text-xs"></i>
+                                    </button>
+                                    <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="{{ item.product.stock_quantity|default:10 }}" 
+                                           class="w-12 text-center border-0 focus:ring-0 bg-white dark:bg-dark-700 dark:text-light-100">
+                                    <button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()" 
+                                            class="px-3 py-1 bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 transition text-gray-600 dark:text-light-400">
+                                        <i class="fas fa-plus text-xs"></i>
+                                    </button>
+                                </div>
+                                <button type="submit" class="ml-2 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hidden sm:inline-flex items-center">
+                                    <i class="fas fa-sync-alt mr-1 text-xs"></i> Update
+                                </button>
+                            </form>
+                            
+                            <div class="flex items-center">
+                                <span class="font-semibold text-gray-900 dark:text-light-100 mr-4 hidden sm:block">${{ item.subtotal }}</span>
+                                <a href="{% url 'store:remove_from_cart' item.id %}" class="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 p-2 rounded-full hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors" 
+                                   onclick="return confirm('Remove this item from your cart?')">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                
+                <!-- Protection Plans & Services -->
+                <div class="bg-white dark:bg-dark-700 rounded-xl shadow-sm p-4 border border-gray-200 dark:border-dark-600">
+                    <h3 class="font-medium text-gray-900 dark:text-light-100 mb-3">Add Protection & Services</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start p-3 border border-gray-200 dark:border-dark-600 rounded-lg hover:border-blue-500 transition-colors cursor-pointer">
+                            <input type="checkbox" id="extended-warranty" class="mt-1 mr-3">
+                            <div>
+                                <label for="extended-warranty" class="font-medium text-gray-900 dark:text-light-100 cursor-pointer">Extended Warranty (3 Years)</label>
+                                <p class="text-xs text-gray-500 dark:text-light-500 mt-1">Get 3 years of additional coverage for $129.99</p>
+                            </div>
+                            <span class="ml-auto font-medium dark:text-light-100">+$129.99</span>
+                        </div>
+                        <div class="flex items-start p-3 border border-gray-200 dark:border-dark-600 rounded-lg hover:border-blue-500 transition-colors cursor-pointer">
+                            <input type="checkbox" id="accident-protection" class="mt-1 mr-3">
+                            <div>
+                                <label for="accident-protection" class="font-medium text-gray-900 dark:text-light-100 cursor-pointer">Accident Protection Plan</label>
+                                <p class="text-xs text-gray-500 dark:text-light-500 mt-1">Covers drops, spills, and other accidents for 2 years ($89.99)</p>
+                            </div>
+                            <span class="ml-auto font-medium dark:text-light-100">+$89.99</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Coupon Code -->
+                <div class="bg-white dark:bg-dark-700 rounded-xl shadow-sm p-4 border border-gray-200 dark:border-dark-600">
+                    <h3 class="font-medium text-gray-900 dark:text-light-100 mb-2">Have a coupon code?</h3>
+                    <form class="flex">
+                        <input type="text" placeholder="Enter coupon code" class="flex-grow px-4 py-2 border border-gray-300 dark:border-dark-600 rounded-l-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-500 dark:bg-dark-800 dark:text-light-100">
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-r-lg transition">
+                            Apply
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Order Summary Column -->
+            <div class="bg-white dark:bg-dark-700 rounded-xl shadow-sm p-6 h-fit sticky top-4 border border-gray-200 dark:border-dark-600">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-light-100 mb-6">Order Summary</h2>
+                
+                <div class="space-y-4">
+                    <div class="flex justify-between">
+                        <span class="text-gray-600 dark:text-light-500">Subtotal ({{ cart.total_items }} item{% if cart.total_items != 1 %}s{% endif %})</span>
+                        <span class="font-medium dark:text-light-100">${{ cart.total_price }}</span>
+                    </div>
+                    
+                    <div class="flex justify-between">
+                        <span class="text-gray-600 dark:text-light-500">Shipping</span>
+                        <span class="font-medium dark:text-light-100">
+                            {% if cart.total_price > 50 %}
+                                FREE
+                            {% else %}
+                                $5.99
+                            {% endif %}
+                        </span>
+                    </div>
+                    
+                    <div class="flex justify-between">
+                        <span class="text-gray-600 dark:text-light-500">Tax</span>
+                        <span class="font-medium dark:text-light-100">${{ cart.tax|default:"0.00" }}</span>
+                    </div>
+                    
+                    {% if cart.discount_amount %}
+                    <div class="flex justify-between text-green-600 dark:text-green-400">
+                        <span>Discount</span>
+                        <span class="font-medium">-${{ cart.discount_amount }}</span>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="border-t border-gray-200 dark:border-dark-600 pt-4 mt-4">
+                        <div class="flex justify-between font-bold text-lg dark:text-light-100">
+                            <span>Total</span>
+                            <span>${{ cart.total_with_tax|default:cart.total_price }}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="{% url 'store:checkout' %}" class="block w-full bg-blue-600 hover:bg-blue-700 text-white text-center py-3 rounded-lg mt-6 transition duration-200 font-medium">
+                    <i class="fas fa-lock mr-2"></i> Proceed to Checkout
+                </a>
+                
+                <div class="mt-4 flex items-center justify-center space-x-2 text-sm text-gray-500 dark:text-light-500">
+                    <svg class="w-4 h-4 text-gray-400 dark:text-light-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                    </svg>
+                    <span>Secure Checkout</span>
+                </div>
+                
+                <!-- Tech Support Options -->
+                <div class="mt-6 pt-6 border-t border-gray-200 dark:border-dark-600">
+                    <h3 class="font-semibold text-gray-900 dark:text-light-100 mb-3">Tech Support Options</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center p-2 bg-gray-50 dark:bg-dark-600 rounded-lg">
+                            <div class="p-2 bg-blue-100 dark:bg-blue-900 rounded-full mr-3">
+                                <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-sm dark:text-light-200">24/7 Tech Support</h4>
+                                <p class="text-xs text-gray-500 dark:text-light-500">Included with all laptop purchases</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-2 bg-gray-50 dark:bg-dark-600 rounded-lg">
+                            <div class="p-2 bg-blue-100 dark:bg-blue-900 rounded-full mr-3">
+                                <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-sm dark:text-light-200">On-Site Repairs</h4>
+                                <p class="text-xs text-gray-500 dark:text-light-500">Available in select locations</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Payment Methods -->
+                <div class="mt-6 pt-6 border-t border-gray-200 dark:border-dark-600">
+                    <h3 class="font-semibold text-gray-900 dark:text-light-100 mb-3">Accepted Payment Methods</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <div class="w-12 h-8 bg-gray-100 dark:bg-dark-600 rounded flex items-center justify-center p-1">
+                            <img src="{% static 'images/visa.svg' %}" alt="Visa" class="max-w-full max-h-full">
+                        </div>
+                        <div class="w-12 h-8 bg-gray-100 dark:bg-dark-600 rounded flex items-center justify-center p-1">
+                            <img src="{% static 'images/mastercard.svg' %}" alt="Mastercard" class="max-w-full max-h-full">
+                        </div>
+                        <div class="w-12 h-8 bg-gray-100 dark:bg-dark-600 rounded flex items-center justify-center p-1">
+                            <img src="{% static 'images/amex.svg' %}" alt="American Express" class="max-w-full max-h-full">
+                        </div>
+                        <div class="w-12 h-8 bg-gray-100 dark:bg-dark-600 rounded flex items-center justify-center p-1">
+                            <img src="{% static 'images/paypal.svg' %}" alt="PayPal" class="max-w-full max-h-full">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <!-- Empty Cart State -->
+        <div class="bg-white dark:bg-dark-700 rounded-xl shadow-sm p-12 text-center max-w-2xl mx-auto">
+            <div class="w-24 h-24 bg-gray-100 dark:bg-dark-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-shopping-cart text-gray-400 dark:text-dark-400 text-3xl"></i>
+            </div>
+            <h2 class="mt-4 text-2xl font-medium text-gray-900 dark:text-light-100">Your tech cart is empty</h2>
+            <p class="mt-2 text-gray-500 dark:text-light-500">Looks like you haven't added any laptops or accessories yet.</p>
+            <a href="{% url 'store:product_list' %}" class="mt-6 inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg transition duration-200 font-medium">
+                <i class="fas fa-arrow-left mr-2"></i> Browse Laptops
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+<script>
+// Confirm before removing item from cart
+document.querySelectorAll('a[href*="remove_from_cart"]').forEach(link => {
+    link.addEventListener('click', function(e) {
+        if (!confirm('Are you sure you want to remove this item from your cart?')) {
+            e.preventDefault();
+        }
+    });
+});
+
+// Update quantity and submit form when changed
+document.querySelectorAll('input[name="quantity"]').forEach(input => {
+    input.addEventListener('change', function() {
+        this.closest('form').submit();
+    });
+});
+
+// Auto-update cart when quantity buttons are clicked
+document.querySelectorAll('[onclick*="stepUp"], [onclick*="stepDown"]').forEach(button => {
+    button.addEventListener('click', function() {
+        setTimeout(() => {
+            this.closest('form').submit();
+        }, 300);
+    });
+});
+</script>
+{% endblock %}

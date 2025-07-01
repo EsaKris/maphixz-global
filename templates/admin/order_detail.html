@@ -1,0 +1,445 @@
+{% extends "admin/admin_base.html" %}
+
+{% block page_title %}
+    {% if order.is_repair %}
+        Repair Order #{{ order.id }}
+    {% else %}
+        Sales Order #{{ order.id }}
+    {% endif %}
+{% endblock %}
+
+{% block page_subtitle %}
+    {{ order.customer_name }} • {{ order.created_at|date:"M d, Y" }}
+{% endblock %}
+
+{% block admin_content %}
+<!-- Back Button -->
+<div class="mb-6">
+    <a href="{% if order.is_repair %}{% url 'store:admin_repairs' %}{% else %}{% url 'store:admin_orders' %}{% endif %}" 
+       class="inline-flex items-center text-gray-600 hover:text-gray-900 transition">
+        <i class="fas fa-arrow-left mr-2"></i>
+        Back to {% if order.is_repair %}Repairs{% else %}Orders{% endif %}
+    </a>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Main Content -->
+    <div class="lg:col-span-2 space-y-6">
+        <!-- Order Status Card -->
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2 sm:mb-0">
+                    {% if order.is_repair %}
+                        Repair Status
+                    {% else %}
+                        Order Status
+                    {% endif %}
+                </h3>
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
+                    {% if order.status == 'pending' %}bg-yellow-100 text-yellow-800
+                    {% elif order.status == 'processing' %}bg-blue-100 text-blue-800
+                    {% elif order.status == 'completed' %}bg-green-100 text-green-800
+                    {% elif order.status == 'cancelled' %}bg-red-100 text-red-800
+                    {% else %}bg-gray-100 text-gray-800{% endif %}">
+                    {{ order.get_status_display }}
+                </span>
+            </div>
+
+            <!-- Status Timeline -->
+            <div class="mb-6">
+                <div class="flex items-center space-x-4 mb-4">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center
+                        {% if order.status != 'pending' %}bg-green-100 text-green-800{% else %}bg-gray-100 text-gray-400{% endif %}">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-gray-900">Order Placed</p>
+                        <p class="text-xs text-gray-500">{{ order.created_at|date:"M d, Y g:i A" }}</p>
+                    </div>
+                </div>
+
+                {% if order.status != 'pending' %}
+                <div class="flex items-center space-x-4 mb-4">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center
+                        {% if order.status == 'processing' or order.status == 'completed' %}bg-green-100 text-green-800{% else %}bg-gray-100 text-gray-400{% endif %}">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-gray-900">Processing</p>
+                        {% if order.status == 'processing' or order.status == 'completed' %}
+                            <p class="text-xs text-gray-500">Started on {{ order.updated_at|date:"M d, Y g:i A" }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if order.status == 'completed' %}
+                <div class="flex items-center space-x-4">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center bg-green-100 text-green-800">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-gray-900">Completed</p>
+                        <p class="text-xs text-gray-500">{{ order.updated_at|date:"M d, Y g:i A" }}</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Status Update Form -->
+            <form method="post" class="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-3">
+                {% csrf_token %}
+                <select name="status" 
+                        class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    {% for value, label in status_choices %}
+                        <option value="{{ value }}" {% if order.status == value %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <button type="submit" 
+                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                    <i class="fas fa-save mr-2"></i>
+                    Update Status
+                </button>
+            </form>
+        </div>
+
+        <!-- Order/Repair Details -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-900">
+                    {% if order.is_repair %}
+                        Repair Details
+                    {% else %}
+                        Order Items
+                    {% endif %}
+                </h3>
+            </div>
+            
+            {% if order.is_repair %}
+            <!-- Repair Details -->
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-sm font-medium text-gray-500 mb-2">Laptop Details</h4>
+                        <div class="space-y-2">
+                            <p class="text-sm text-gray-900"><strong>Brand:</strong> {{ order.laptop_brand }}</p>
+                            <p class="text-sm text-gray-900"><strong>Model:</strong> {{ order.laptop_model }}</p>
+                            <p class="text-sm text-gray-900"><strong>Serial:</strong> {{ order.laptop_serial|default:"Not provided" }}</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-medium text-gray-500 mb-2">Repair Information</h4>
+                        <div class="space-y-2">
+                            <p class="text-sm text-gray-900"><strong>Issue:</strong> {{ order.laptop_issue }}</p>
+                            <p class="text-sm text-gray-900"><strong>Diagnosis:</strong> {{ order.diagnosis|default:"Pending" }}</p>
+                            <p class="text-sm text-gray-900"><strong>Repair Cost:</strong> ₦{{ order.repair_cost }}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                {% if order.repair_notes %}
+                <div class="mt-6">
+                    <h4 class="text-sm font-medium text-gray-500 mb-2">Technician Notes</h4>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <p class="text-sm text-gray-700">{{ order.repair_notes }}</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            {% else %}
+            <!-- Order Items -->
+            <div class="divide-y divide-gray-200">
+                {% for item in order.items.all %}
+                <div class="p-6 flex items-start space-x-4">
+                    <div class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center">
+                        {% if item.product.image %}
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" 
+                                 class="w-full h-full object-contain rounded-lg">
+                        {% else %}
+                            <i class="fas fa-laptop text-gray-400"></i>
+                        {% endif %}
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-sm font-medium text-gray-900">{{ item.product.name }}</h4>
+                        <div class="mt-1 flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs">
+                                {{ item.product.brand.name }}
+                            </span>
+                            {% if item.product.processor %}
+                            <span class="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs">
+                                {{ item.product.processor }}
+                            </span>
+                            {% endif %}
+                            {% if item.product.ram %}
+                            <span class="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs">
+                                {{ item.product.ram }} RAM
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm font-semibold text-gray-900">₦{{ item.subtotal }}</p>
+                        <p class="text-xs text-gray-500">Qty: {{ item.quantity }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            <!-- Order Total -->
+            <div class="p-6 bg-gray-50 border-t border-gray-200">
+                <div class="flex justify-between items-center">
+                    <span class="text-lg font-semibold text-gray-900">Total Amount</span>
+                    <span class="text-xl font-bold text-blue-600">₦{{ order.total_amount }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="space-y-6">
+        <!-- Customer Information -->
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Customer Information</h3>
+            <div class="space-y-3">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                        <i class="fas fa-user text-blue-600"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-900">{{ order.customer_name }}</p>
+                        <p class="text-xs text-gray-500">Customer since {{ order.customer.date_joined|date:"M Y"|default:"Unknown" }}</p>
+                    </div>
+                </div>
+                <div class="space-y-2 pl-13">
+                    <div class="flex items-center">
+                        <i class="fas fa-phone w-4 text-gray-400 mr-2"></i>
+                        <a href="tel:{{ order.customer_phone }}" class="text-sm text-gray-600 hover:text-blue-600">
+                            {{ order.customer_phone }}
+                        </a>
+                    </div>
+                    {% if order.customer_email %}
+                    <div class="flex items-center">
+                        <i class="fas fa-envelope w-4 text-gray-400 mr-2"></i>
+                        <a href="mailto:{{ order.customer_email }}" class="text-sm text-gray-600 hover:text-blue-600">
+                            {{ order.customer_email }}
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Delivery/Pickup Information -->
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                {% if order.is_repair %}
+                    Pickup Information
+                {% else %}
+                    Delivery Information
+                {% endif %}
+            </h3>
+            <div class="space-y-3">
+                <div class="flex items-start">
+                    <i class="fas fa-map-marker-alt w-5 text-gray-400 mr-3 mt-0.5"></i>
+                    <div>
+                        <p class="text-sm font-medium text-gray-900">Address</p>
+                        <p class="text-sm text-gray-600">{{ order.delivery_address }}</p>
+                        <p class="text-sm text-gray-600">{{ order.delivery_city }}</p>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <i class="fas {% if order.is_repair %}fa-tools{% else %}fa-truck{% endif %} w-5 text-gray-400 mr-3"></i>
+                    <div>
+                        <p class="text-sm font-medium text-gray-900">
+                            {% if order.is_repair %}Pickup Method{% else %}Delivery Method{% endif %}
+                        </p>
+                        <p class="text-sm text-gray-600">{{ order.get_delivery_method_display }}</p>
+                    </div>
+                </div>
+                {% if order.delivery_notes %}
+                <div class="flex items-start">
+                    <i class="fas fa-sticky-note w-5 text-gray-400 mr-3 mt-0.5"></i>
+                    <div>
+                        <p class="text-sm font-medium text-gray-900">Special Instructions</p>
+                        <p class="text-sm text-gray-600">{{ order.delivery_notes }}</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Payment Information -->
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Payment Information</h3>
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm font-medium text-gray-600">Payment Method</span>
+                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium
+                        {% if order.payment_method == 'online' %}bg-blue-100 text-blue-800
+                        {% else %}bg-green-100 text-green-800{% endif %}">
+                        {% if order.payment_method == 'online' %}
+                            <i class="fas fa-credit-card mr-1"></i>
+                        {% else %}
+                            <i class="fab fa-whatsapp mr-1"></i>
+                        {% endif %}
+                        {{ order.get_payment_method_display }}
+                    </span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-sm font-medium text-gray-600">Payment Status</span>
+                    <span class="text-sm font-medium
+                        {% if order.payment_status == 'paid' %}text-green-600
+                        {% else %}text-yellow-600{% endif %}">
+                        {{ order.get_payment_status_display }}
+                    </span>
+                </div>
+                <div class="pt-4 border-t border-gray-200">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-sm font-medium text-gray-600">Subtotal</span>
+                        <span class="text-sm text-gray-900">₦{{ order.subtotal }}</span>
+                    </div>
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-sm font-medium text-gray-600">Delivery Fee</span>
+                        <span class="text-sm text-gray-900">₦{{ order.delivery_fee }}</span>
+                    </div>
+                    <div class="flex items-center justify-between font-medium">
+                        <span class="text-sm text-gray-600">Total Amount</span>
+                        <span class="text-sm text-blue-600">₦{{ order.total_amount }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl p-6 text-white">
+            <h3 class="text-lg font-semibold mb-4">Quick Actions</h3>
+            <div class="space-y-3">
+                <a href="https://wa.me/{{ order.customer_phone }}" target="_blank"
+                   class="block text-center px-4 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg transition">
+                    <i class="fab fa-whatsapp mr-2"></i>
+                    WhatsApp Customer
+                </a>
+                <button onclick="printOrder()" 
+                        class="w-full px-4 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg transition">
+                    <i class="fas fa-print mr-2"></i>
+                    Print Receipt
+                </button>
+                {% if order.is_repair and order.status != 'completed' %}
+                <a href="{% url 'store:admin_add_repair_note' order.id %}" 
+                   class="block text-center px-4 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg transition">
+                    <i class="fas fa-edit mr-2"></i>
+                    Add Repair Notes
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function printOrder() {
+    // Create a print-friendly version of the order details
+    const printContent = `
+        <div style="padding: 20px; font-family: Arial, sans-serif;">
+            <h1 style="text-align: center; margin-bottom: 20px;">
+                {% if order.is_repair %}
+                    Maphixz Global - Repair Receipt
+                {% else %}
+                    Maphixz Global - Sales Invoice
+                {% endif %}
+            </h1>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                <div>
+                    <p><strong>Order #:</strong> {{ order.id }}</p>
+                    <p><strong>Date:</strong> {{ order.created_at|date:"M d, Y g:i A" }}</p>
+                </div>
+                <div>
+                    <p><strong>Status:</strong> {{ order.get_status_display }}</p>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <h2 style="border-bottom: 1px solid #ddd; padding-bottom: 5px;">Customer Information</h2>
+                <p><strong>Name:</strong> {{ order.customer_name }}</p>
+                <p><strong>Phone:</strong> {{ order.customer_phone }}</p>
+                {% if order.customer_email %}<p><strong>Email:</strong> {{ order.customer_email }}</p>{% endif %}
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <h2 style="border-bottom: 1px solid #ddd; padding-bottom: 5px;">
+                    {% if order.is_repair %}Repair Details{% else %}Order Items{% endif %}
+                </h2>
+                {% if order.is_repair %}
+                    <p><strong>Laptop:</strong> {{ order.laptop_brand }} {{ order.laptop_model }}</p>
+                    <p><strong>Issue:</strong> {{ order.laptop_issue }}</p>
+                    <p><strong>Repair Cost:</strong> ₦{{ order.repair_cost }}</p>
+                {% else %}
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid #ddd;">
+                                <th style="text-align: left; padding: 8px;">Item</th>
+                                <th style="text-align: right; padding: 8px;">Price</th>
+                                <th style="text-align: right; padding: 8px;">Qty</th>
+                                <th style="text-align: right; padding: 8px;">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in order.items.all %}
+                            <tr style="border-bottom: 1px solid #eee;">
+                                <td style="padding: 8px;">{{ item.product.name }}</td>
+                                <td style="text-align: right; padding: 8px;">₦{{ item.price }}</td>
+                                <td style="text-align: right; padding: 8px;">{{ item.quantity }}</td>
+                                <td style="text-align: right; padding: 8px;">₦{{ item.subtotal }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+            </div>
+            
+            <div style="margin-top: 30px; border-top: 1px solid #ddd; padding-top: 10px;">
+                <p style="text-align: right;"><strong>Total Amount:</strong> ₦{{ order.total_amount }}</p>
+                <p style="text-align: right;"><strong>Payment Method:</strong> {{ order.get_payment_method_display }}</p>
+                <p style="text-align: right;"><strong>Payment Status:</strong> {{ order.get_payment_status_display }}</p>
+            </div>
+            
+            <div style="margin-top: 40px; text-align: center; font-size: 12px; color: #777;">
+                <p>Thank you for choosing Maphixz Global</p>
+                <p>For inquiries, contact: +234 123 456 7890</p>
+            </div>
+        </div>
+    `;
+    
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
+        <html>
+            <head>
+                <title>Order #{{ order.id }} - Maphixz Global</title>
+                <style>
+                    body { font-family: Arial, sans-serif; margin: 0; padding: 20px; color: #333; }
+                    table { width: 100%; border-collapse: collapse; }
+                    th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }
+                    .text-right { text-align: right; }
+                    .text-center { text-align: center; }
+                </style>
+            </head>
+            <body>
+                ${printContent}
+                <script>
+                    window.onload = function() {
+                        window.print();
+                        setTimeout(function() {
+                            window.close();
+                        }, 1000);
+                    };
+                <\/script>
+            </body>
+        </html>
+    `);
+    printWindow.document.close();
+}
+</script>
+{% endblock %}

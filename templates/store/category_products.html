@@ -1,0 +1,746 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="category-section dark:bg-dark-800">
+    <!-- Category Hero Section -->
+    <div class="category-hero bg-gradient-to-r from-primary-100 to-primary-50 dark:from-dark-700 dark:to-dark-900">
+        <div class="container mx-auto px-4 py-12 md:py-16">
+            <div class="max-w-3xl mx-auto text-center">
+                <h1 class="category-title text-dark-900 dark:text-light-100">{{ category.name }}</h1>
+                {% if category.description %}
+                <p class="category-description text-dark-700 dark:text-light-300">{{ category.description }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Products Section -->
+    <div class="container mx-auto px-4 py-8 md:py-12">
+        {% if products %}
+        <!-- Filter/Sort Bar -->
+        <div class="filter-bar border-b border-gray-200 dark:border-dark-600">
+            <div class="filter-results text-gray-600 dark:text-light-400">
+                Showing {{ products.start_index }}-{{ products.end_index }} of {{ products.paginator.count }} products
+            </div>
+            <div class="sort-options">
+                <label for="sort" class="sort-label text-gray-600 dark:text-light-300">Sort by:</label>
+                <select id="sort" class="sort-select bg-white dark:bg-dark-700 border-gray-300 dark:border-dark-600 text-gray-700 dark:text-light-300">
+                    <option value="popular">Most Popular</option>
+                    <option value="newest">Newest Arrivals</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="products-grid">
+            {% for product in products %}
+            <div class="product-card bg-white dark:bg-dark-700 shadow-sm hover:shadow-md dark:hover:shadow-dark-600">
+                <!-- Product Badges -->
+                {% if product.featured %}
+                <div class="product-badge featured-badge bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200">
+                    <i class="fas fa-star"></i> Featured
+                </div>
+                {% endif %}
+                {% if product.is_new %}
+                <div class="product-badge new-badge bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
+                    New Arrival
+                </div>
+                {% endif %}
+                {% if product.is_refurbished %}
+                <div class="product-badge refurbished-badge bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200">
+                    <i class="fas fa-recycle"></i> Refurbished
+                </div>
+                {% endif %}
+
+                <!-- Product Image -->
+                <div class="product-image-container">
+                    <a href="{% url 'store:product_detail' product.slug %}">
+                        {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+                        {% else %}
+                        <div class="image-placeholder bg-gray-100 dark:bg-dark-600 text-gray-400 dark:text-dark-400">
+                            <i class="fas fa-laptop"></i>
+                        </div>
+                        {% endif %}
+                    </a>
+                    
+                    <!-- Quick Actions -->
+                    <div class="product-actions bg-white/90 dark:bg-dark-600/90">
+                        <button class="quick-view-btn bg-primary-100 hover:bg-primary-200 text-primary-800 dark:bg-primary-900 dark:hover:bg-primary-800 dark:text-primary-200" data-product-id="{{ product.id }}">
+                            <i class="fas fa-eye"></i> Quick View
+                        </button>
+                        {% if product.stock_status == 'available' %}
+                        <button class="add-to-cart-btn bg-secondary-100 hover:bg-secondary-200 text-secondary-800 dark:bg-secondary-900 dark:hover:bg-secondary-800 dark:text-secondary-200" data-product-id="{{ product.id }}">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Product Info -->
+                <div class="product-info">
+                    <div class="product-meta">
+                        <span class="product-category text-gray-500 dark:text-light-500">{{ product.category.name }}</span>
+                        <span class="stock-status stock-{{ product.stock_status }} text-sm">
+                            {% if product.stock_status == 'available' %}
+                            <i class="fas fa-check-circle"></i> In Stock
+                            {% elif product.stock_status == 'out_of_stock' %}
+                            <i class="fas fa-times-circle"></i> Out of Stock
+                            {% else %}
+                            <i class="fas fa-ban"></i> Sold Out
+                            {% endif %}
+                        </span>
+                    </div>
+                    
+                    <h3 class="product-title text-dark-800 dark:text-light-100">
+                        <a href="{% url 'store:product_detail' product.slug %}">{{ product.name }}</a>
+                    </h3>
+                    
+                    <!-- Tech Specs -->
+                    <div class="tech-specs flex flex-wrap gap-2 my-2">
+                        {% if product.processor %}
+                        <span class="chip bg-gray-100 dark:bg-dark-600 text-gray-800 dark:text-light-300 text-xs px-2 py-1 rounded">
+                            <i class="fas fa-microchip mr-1"></i> {{ product.processor }}
+                        </span>
+                        {% endif %}
+                        {% if product.ram %}
+                        <span class="chip bg-gray-100 dark:bg-dark-600 text-gray-800 dark:text-light-300 text-xs px-2 py-1 rounded">
+                            <i class="fas fa-memory mr-1"></i> {{ product.ram }}
+                        </span>
+                        {% endif %}
+                        {% if product.storage %}
+                        <span class="chip bg-gray-100 dark:bg-dark-600 text-gray-800 dark:text-light-300 text-xs px-2 py-1 rounded">
+                            <i class="fas fa-hdd mr-1"></i> {{ product.storage }}
+                        </span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="product-footer">
+                        <div class="product-price">
+                            <span class="current-price text-primary-600 dark:text-primary-400">${{ product.price }}</span>
+                            {% if product.old_price %}
+                            <span class="old-price text-gray-500 dark:text-light-500">${{ product.old_price }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="product-rating">
+                            <div class="stars text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="rating-count text-gray-500 dark:text-light-500">({{ product.review_count }})</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if products.has_other_pages %}
+        <div class="pagination-container">
+            <div class="pagination">
+                {% if products.has_previous %}
+                <a href="?page={{ products.previous_page_number }}" class="pagination-link bg-white dark:bg-dark-700 border-gray-300 dark:border-dark-600 text-gray-700 dark:text-light-300 hover:bg-gray-100 dark:hover:bg-dark-600">
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+                {% endif %}
+                
+                {% for num in products.paginator.page_range %}
+                    {% if products.number == num %}
+                    <span class="pagination-link bg-primary-600 dark:bg-primary-700 border-primary-600 dark:border-primary-700 text-white">{{ num }}</span>
+                    {% else %}
+                    <a href="?page={{ num }}" class="pagination-link bg-white dark:bg-dark-700 border-gray-300 dark:border-dark-600 text-gray-700 dark:text-light-300 hover:bg-gray-100 dark:hover:bg-dark-600">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if products.has_next %}
+                <a href="?page={{ products.next_page_number }}" class="pagination-link bg-white dark:bg-dark-700 border-gray-300 dark:border-dark-600 text-gray-700 dark:text-light-300 hover:bg-gray-100 dark:hover:bg-dark-600">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% else %}
+        <!-- Empty State -->
+        <div class="empty-state bg-white dark:bg-dark-700 shadow-sm">
+            <div class="empty-state-icon text-gray-300 dark:text-dark-500">
+                <i class="fas fa-laptop"></i>
+            </div>
+            <h3 class="empty-state-title text-dark-800 dark:text-light-100">No Products Found</h3>
+            <p class="empty-state-text text-gray-600 dark:text-light-400">We couldn't find any products in this category.</p>
+            <a href="{% url 'store:product_list' %}" class="empty-state-btn bg-primary-600 dark:bg-primary-700 hover:bg-primary-700 dark:hover:bg-primary-600 text-white">
+                Browse All Products
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Quick View Modal -->
+<div id="quickViewModal" class="modal fixed inset-0 z-50 hidden">
+    <div class="modal-overlay absolute inset-0 bg-black/50"></div>
+    <div class="modal-content relative bg-white dark:bg-dark-800 mx-auto my-12 p-6 rounded-lg max-w-4xl w-[90%] max-h-[90vh] overflow-y-auto">
+        <span class="close-modal absolute top-4 right-4 text-gray-500 dark:text-light-400 hover:text-gray-700 dark:hover:text-light-200 cursor-pointer text-2xl">&times;</span>
+        <div class="modal-body" id="quickViewContent">
+            <!-- Content loaded via AJAX -->
+        </div>
+    </div>
+</div>
+
+<style>
+/* Category Hero */
+.category-hero {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    dark:border-dark-600;
+}
+
+.category-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.category-description {
+    font-size: 1.125rem;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Filter Bar */
+.filter-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 0.75rem 0;
+}
+
+.filter-results {
+    font-size: 0.875rem;
+}
+
+.sort-options {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.sort-label {
+    font-size: 0.875rem;
+}
+
+.sort-select {
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.sort-select:hover {
+    border-color: #9ca3af;
+}
+
+/* Products Grid */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.product-card {
+    border-radius: 0.5rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    dark:shadow-dark-600;
+}
+
+/* Product Badges */
+.product-badge {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* Product Image */
+.product-image-container {
+    position: relative;
+    height: 0;
+    padding-bottom: 100%;
+    overflow: hidden;
+}
+
+.product-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background-color: #f8fafc;
+    dark:bg-dark-900;
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-image {
+    transform: scale(1.05);
+}
+
+.image-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-placeholder i {
+    font-size: 2rem;
+}
+
+/* Product Actions */
+.product-actions {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    backdrop-filter: blur(5px);
+}
+
+.product-card:hover .product-actions {
+    transform: translateY(0);
+}
+
+.quick-view-btn, .add-to-cart-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-align: center;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: none;
+    cursor: pointer;
+}
+
+/* Product Info */
+.product-info {
+    padding: 1.25rem;
+}
+
+.product-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.75rem;
+}
+
+.stock-status {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.stock-available {
+    color: #16a34a;
+    dark:text-green-400;
+}
+
+.stock-out_of_stock {
+    color: #dc2626;
+    dark:text-red-400;
+}
+
+.stock-sold_out {
+    color: #6b7280;
+    dark:text-gray-400;
+}
+
+.product-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.product-title a:hover {
+    color: #7c3aed;
+    dark:text-primary-400;
+}
+
+.tech-specs {
+    margin: 0.5rem 0;
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.product-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.product-price {
+    display: flex;
+    flex-direction: column;
+}
+
+.current-price {
+    font-size: 1.125rem;
+    font-weight: 700;
+}
+
+.old-price {
+    font-size: 0.875rem;
+    text-decoration: line-through;
+}
+
+.product-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.stars {
+    font-size: 0.875rem;
+}
+
+.rating-count {
+    font-size: 0.75rem;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3rem 2rem;
+    border-radius: 0.5rem;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.empty-state-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.empty-state-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.empty-state-text {
+    margin-bottom: 1.5rem;
+}
+
+.empty-state-btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+/* Pagination */
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.pagination {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.pagination-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.375rem;
+    border: 1px solid;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+}
+
+.pagination-link:hover {
+    border-color: #9ca3af;
+}
+
+.pagination-link.active {
+    border-color: transparent;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 50;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.modal-overlay {
+    position: absolute;
+    inset: 0;
+}
+
+.modal-content {
+    position: relative;
+    animation: modalFadeIn 0.3s;
+}
+
+.close-modal {
+    transition: color 0.2s;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .category-title {
+        font-size: 2rem;
+    }
+    
+    .category-description {
+        font-size: 1rem;
+    }
+    
+    .filter-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    }
+}
+</style>
+
+<script>
+// Quick View Modal Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Quick View Buttons
+    const quickViewButtons = document.querySelectorAll('.quick-view-btn');
+    const modal = document.getElementById('quickViewModal');
+    const closeModal = document.querySelector('.close-modal');
+    
+    quickViewButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const productId = this.getAttribute('data-product-id');
+            loadQuickView(productId);
+        });
+    });
+    
+    closeModal.addEventListener('click', function() {
+        modal.style.display = 'none';
+    });
+    
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+    
+    // Sort Functionality
+    const sortSelect = document.getElementById('sort');
+    sortSelect.addEventListener('change', function() {
+        const sortValue = this.value;
+        const currentUrl = new URL(window.location.href);
+        
+        // Update URL with sort parameter
+        currentUrl.searchParams.set('sort', sortValue);
+        window.location.href = currentUrl.toString();
+    });
+    
+    // Initialize sort select with current value
+    const urlParams = new URLSearchParams(window.location.search);
+    const currentSort = urlParams.get('sort') || 'popular';
+    sortSelect.value = currentSort;
+    
+    // Add to Cart Buttons
+    const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+    addToCartButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const productId = this.getAttribute('data-product-id');
+            addToCart(productId);
+        });
+    });
+});
+
+function loadQuickView(productId) {
+    const modal = document.getElementById('quickViewModal');
+    const quickViewContent = document.getElementById('quickViewContent');
+    
+    // Show loading state
+    quickViewContent.innerHTML = `
+        <div class="text-center py-8 text-gray-600 dark:text-light-400">
+            <i class="fas fa-spinner fa-spin text-2xl mb-2"></i>
+            <p>Loading product details...</p>
+        </div>
+    `;
+    modal.style.display = 'block';
+    
+    // AJAX call to fetch product details
+    fetch(`/api/products/${productId}/quickview/`)
+        .then(response => response.json())
+        .then(data => {
+            quickViewContent.innerHTML = `
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="product-image-container">
+                        <img src="${data.image_url || '{% static "images/laptop-placeholder.jpg" %}'}" alt="${data.name}" class="product-image w-full h-auto rounded-lg">
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold mb-2 dark:text-light-100">${data.name}</h2>
+                        <div class="text-primary-600 dark:text-primary-400 font-bold text-2xl mb-4">$${data.price}</div>
+                        <div class="mb-4">
+                            <div class="stars text-yellow-400 mb-1">
+                                ${Array(Math.floor(data.rating)).fill('<i class="fas fa-star"></i>').join('')}
+                                ${data.rating % 1 ? '<i class="fas fa-star-half-alt"></i>' : ''}
+                                <span class="text-gray-500 dark:text-light-500 text-sm ml-1">(${data.review_count} reviews)</span>
+                            </div>
+                            <div class="text-sm ${data.stock_status === 'available' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}">
+                                <i class="fas ${data.stock_status === 'available' ? 'fa-check-circle' : 'fa-times-circle'}"></i>
+                                ${data.stock_status === 'available' ? 'In Stock' : 'Out of Stock'}
+                            </div>
+                        </div>
+                        <div class="tech-specs mb-4">
+                            <h3 class="font-semibold mb-2 dark:text-light-200">Specifications</h3>
+                            <ul class="grid grid-cols-2 gap-2 text-sm">
+                                ${data.processor ? `<li class="flex items-center"><i class="fas fa-microchip mr-2 text-gray-500 dark:text-light-500"></i> ${data.processor}</li>` : ''}
+                                ${data.ram ? `<li class="flex items-center"><i class="fas fa-memory mr-2 text-gray-500 dark:text-light-500"></i> ${data.ram}</li>` : ''}
+                                ${data.storage ? `<li class="flex items-center"><i class="fas fa-hdd mr-2 text-gray-500 dark:text-light-500"></i> ${data.storage}</li>` : ''}
+                                ${data.graphics ? `<li class="flex items-center"><i class="fas fa-gamepad mr-2 text-gray-500 dark:text-light-500"></i> ${data.graphics}</li>` : ''}
+                            </ul>
+                        </div>
+                        <div class="flex gap-3">
+                            <button class="add-to-cart-quick bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg transition" data-product-id="${data.id}">
+                                Add to Cart
+                            </button>
+                            <a href="/products/${data.slug}/" class="border border-primary-600 text-primary-600 hover:bg-primary-50 dark:hover:bg-dark-700 px-6 py-3 rounded-lg transition text-center dark:border-primary-400 dark:text-primary-400">
+                                View Full Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Add event listener to quick view's add to cart button
+            document.querySelector('.add-to-cart-quick')?.addEventListener('click', function() {
+                addToCart(data.id);
+            });
+        })
+        .catch(error => {
+            console.error('Error loading quick view:', error);
+            quickViewContent.innerHTML = `
+                <div class="text-center py-8 text-red-600 dark:text-red-400">
+                    <i class="fas fa-exclamation-circle text-2xl mb-2"></i>
+                    <p>Failed to load product details. Please try again.</p>
+                </div>
+            `;
+        });
+}
+
+function addToCart(productId) {
+    fetch('/cart/add/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}',
+        },
+        body: JSON.stringify({
+            product_id: productId,
+            quantity: 1
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showToast('Product added to cart!', 'success');
+            // Update cart count in navbar
+            const cartCountElements = document.querySelectorAll('.cart-count');
+            cartCountElements.forEach(el => {
+                el.textContent = data.cart_count;
+                el.classList.remove('hidden');
+            });
+        } else {
+            showToast(data.message || 'Failed to add to cart', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error adding to cart:', error);
+        showToast('Error adding to cart. Please try again.', 'error');
+    });
+}
+
+function showToast(message, type = 'success') {
+    const toast = document.createElement('div');
+    toast.className = `fixed bottom-4 right-4 px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 ${
+        type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+    }`;
+    toast.innerHTML = `
+        <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+        <span>${message}</span>
+    `;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
+}
+</script>
+{% endblock %}

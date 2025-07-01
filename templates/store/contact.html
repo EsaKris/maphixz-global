@@ -1,0 +1,227 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <span class="inline-block mb-4 px-4 py-2 bg-primary-100 text-primary-600 rounded-full text-sm font-medium">Technical Support</span>
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Contact <span class="gradient-text">Maphixz</span></h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">Our technical team is ready to assist with your IT solutions, repairs, and service inquiries.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <!-- Contact Form -->
+            <div class="bg-white p-8 rounded-2xl shadow-lg">
+                <form id="contactForm" method="post" class="space-y-6">
+                    {% csrf_token %}
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
+                        <input type="text" id="name" name="name" required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all">
+                    </div>
+                    
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Your Email</label>
+                        <input type="email" id="email" name="email" required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all">
+                    </div>
+                    
+                    <div>
+                        <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone (WhatsApp)</label>
+                        <input type="tel" id="phone" name="phone"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                            placeholder="Include country code (e.g. +234)">
+                    </div>
+                    
+                    <div>
+                        <label for="service" class="block text-sm font-medium text-gray-700 mb-1">Service Needed</label>
+                        <select id="service" name="service" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all">
+                            <option value="">Select a service</option>
+                            <option value="laptop-repair">Laptop Repair</option>
+                            <option value="hardware-upgrade">Hardware Upgrade</option>
+                            <option value="software-solutions">Software Solutions</option>
+                            <option value="data-recovery">Data Recovery</option>
+                            <option value="it-consulting">IT Consulting</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Technical Details</label>
+                        <textarea id="message" name="message" rows="5" required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                            placeholder="Describe your technical issue or project requirements"></textarea>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <input type="checkbox" id="whatsapp" name="whatsapp" checked
+                            class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
+                        <label for="whatsapp" class="ml-2 block text-sm text-gray-700">
+                            Also contact me via WhatsApp
+                        </label>
+                    </div>
+                    
+                    <button type="submit" id="submitBtn"
+                        class="w-full px-6 py-4 bg-gradient-to-r from-primary-600 to-secondary-600 text-white font-medium rounded-lg hover:from-primary-700 hover:to-secondary-700 transition-all shadow-md hover:shadow-lg flex items-center justify-center">
+                        <span>Submit Technical Request</span>
+                        <i class="fas fa-paper-plane ml-2"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="space-y-8">
+                <div class="bg-white p-8 rounded-2xl shadow-lg h-full">
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 bg-primary-100 p-3 rounded-full">
+                                <i class="fas fa-envelope text-primary-600 text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-medium text-gray-900">Technical Support</h3>
+                                <p class="mt-1 text-gray-600">support@maphixz.com</p>
+                                <p class="mt-1 text-gray-600">For urgent issues: urgent@maphixz.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 bg-secondary-100 p-3 rounded-full">
+                                <i class="fas fa-phone-alt text-secondary-600 text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-medium text-gray-900">Support Hotlines</h3>
+                                <p class="mt-1 text-gray-600">+234 915 577 5787 (Main)</p>
+                                <p class="mt-1 text-gray-600">+234 902 577 5787 (Backup)</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 bg-yellow-100 p-3 rounded-full">
+                                <i class="fab fa-whatsapp text-yellow-600 text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-medium text-gray-900">WhatsApp Support</h3>
+                                <p class="mt-1 text-gray-600">+234 915 577 5787</p>
+                                <a href="https://wa.me/2349155775787" class="inline-flex items-center mt-2 text-primary-600 hover:text-primary-800">
+                                    <span>Chat with Technician</span>
+                                    <i class="fas fa-external-link-alt ml-1 text-xs"></i>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 bg-green-100 p-3 rounded-full">
+                                <i class="fas fa-map-marker-alt text-green-600 text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-medium text-gray-900">Service Center</h3>
+                                <p class="mt-1 text-gray-600">No. 9 Daniel Amokachi Lane</p>
+                                <p class="mt-1 text-gray-600">Kastina-ala Street, Makurdi</p>
+                                <p class="mt-1 text-gray-600">Benue, Nigeria</p>
+                                <a href="https://maps.app.goo.gl/dhqcU2mBVLNho1u96" class="inline-flex items-center mt-2 text-primary-600 hover:text-primary-800">
+                                    <span>Get Directions</span>
+                                    <i class="fas fa-external-link-alt ml-1 text-xs"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 pt-8 border-t border-gray-200">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Service Hours</h3>
+                        <ul class="space-y-2 text-gray-600">
+                            <li class="flex justify-between">
+                                <span>Monday - Friday</span>
+                                <span>8:00 AM - 6:00 PM</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span>Saturday</span>
+                                <span>9:00 AM - 3:00 PM</span>
+                            </li>
+                            <!-- <li class="flex justify-between">
+                                <span>Emergency Support</span>
+                                <span>24/7 (Premium Clients)</span>
+                            </li> -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- WhatsApp Integration Script -->
+<script>
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const submitBtn = document.getElementById('submitBtn');
+    const originalBtnText = submitBtn.innerHTML;
+    
+    // Show loading state
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Processing...';
+    
+    // Get form values
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const phone = document.getElementById('phone').value;
+    const service = document.getElementById('service').value;
+    const message = document.getElementById('message').value;
+    const useWhatsApp = document.getElementById('whatsapp').checked;
+    
+    // Prepare WhatsApp message
+    const whatsappMessage = `New Technical Support Request:\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nService: ${service}\nDetails: ${message}`;
+    
+    // First submit the form normally
+    const formData = new FormData(this);
+    
+    fetch('', {  // Submit to the same URL
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            // If WhatsApp option is checked and phone is provided, open WhatsApp
+            if (useWhatsApp && phone) {
+                const whatsappUrl = `https://wa.me/2349155775787?text=${encodeURIComponent(whatsappMessage)}`;
+                window.open(whatsappUrl, '_blank');
+            }
+            
+            // Show success message
+            submitBtn.innerHTML = '<i class="fas fa-check mr-2"></i> Request Submitted!';
+            setTimeout(() => {
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+                document.getElementById('contactForm').reset();
+            }, 3000);
+            
+            // Show confirmation message
+            alert('Thank you for your technical request! Our team will respond within 24 hours.');
+        } else {
+            throw new Error('Form submission failed');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        submitBtn.innerHTML = '<i class="fas fa-exclamation-triangle mr-2"></i> Error! Try Again';
+        setTimeout(() => {
+            submitBtn.innerHTML = originalBtnText;
+            submitBtn.disabled = false;
+        }, 3000);
+    });
+});
+</script>
+
+<style>
+.gradient-text {
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    background-image: linear-gradient(45deg, #38bdf8, #8b5cf6);
+}
+</style>
+{% endblock %}

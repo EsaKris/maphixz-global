@@ -1,0 +1,344 @@
+{% extends "admin/admin_base.html" %}
+
+{% block title %}Store Settings - Maphixz Global{% endblock %}
+{% block page_title %}Store Configuration{% endblock %}
+{% block page_subtitle %}Manage your laptop store's global settings{% endblock %}
+
+{% block breadcrumbs %}
+    <span class="text-xs md:text-sm text-gray-500">/</span>
+    <a href="{% url 'store:admin_settings' %}" class="text-xs md:text-sm text-blue-500 hover:underline">Settings</a>
+    <span class="text-xs md:text-sm text-gray-500">/</span>
+    <span class="text-xs md:text-sm text-gray-500">Store</span>
+{% endblock %}
+
+{% block admin_content %}
+<div class="space-y-6">
+    <!-- Settings Navigation Tabs -->
+    <div class="border-b border-gray-200">
+        <nav class="-mb-px flex space-x-8 overflow-x-auto">
+            <a href="{% url 'store:admin_settings' %}" class="border-blue-500 text-blue-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center">
+                <i class="fas fa-store mr-2"></i> Store
+            </a>
+            <a href="{% url 'store:admin_shipping_settings' %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center">
+                <i class="fas fa-truck mr-2"></i> Shipping
+            </a>
+
+        </nav>
+    </div>
+
+    <!-- Settings Form -->
+    <form method="post" enctype="multipart/form-data" class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
+        {% csrf_token %}
+        
+        <!-- Store Information Section -->
+        <div class="border-b border-gray-200 px-6 py-4">
+            <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                <i class="fas fa-laptop text-blue-500 mr-2"></i> Store Information
+            </h3>
+            <p class="mt-1 text-sm text-gray-500">Basic information about your laptop store that appears publicly.</p>
+        </div>
+        
+        <div class="px-6 py-4 space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="store_name" class="block text-sm font-medium text-gray-700 mb-1">Store Name *</label>
+                    <input type="text" id="store_name" name="store_name" value="{{ settings.store_name|default:'Maphixz Global' }}" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm" required>
+                </div>
+                <div>
+                    <label for="store_tagline" class="block text-sm font-medium text-gray-700 mb-1">Tagline</label>
+                    <input type="text" id="store_tagline" name="store_tagline" 
+                           value="{{ settings.store_tagline|default:'Premium laptops sales and repair services' }}" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm">
+                </div>
+            </div>
+            
+            <div>
+                <label for="store_description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <textarea id="store_description" name="store_description" rows="3"
+                          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm">{{ settings.store_description|default:'Maphixz Global provides top-quality laptops, accessories, and professional repair services. We specialize in sales of new and refurbished laptops with warranty.' }}</textarea>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="store_logo" class="block text-sm font-medium text-gray-700 mb-1">Store Logo</label>
+                    <div class="flex items-center">
+                        <div class="relative">
+                            {% if settings.store_logo %}
+                                <img src="{{ settings.store_logo.url }}" alt="Store logo" class="h-16 w-16 rounded-md object-contain border border-gray-200">
+                            {% else %}
+                                <div class="h-16 w-16 rounded-md bg-gray-100 flex items-center justify-center border border-gray-200">
+                                    <i class="fas fa-laptop text-gray-400 text-xl"></i>
+                                </div>
+                            {% endif %}
+                            <input type="file" id="store_logo" name="store_logo" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                        </div>
+                        <div class="ml-4 flex flex-col space-y-1">
+                            <button type="button" onclick="document.getElementById('store_logo').click()" 
+                                    class="text-sm bg-white py-1 px-3 border border-gray-300 rounded-md shadow-sm text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                Change Logo
+                            </button>
+                            {% if settings.store_logo %}
+                            <label class="inline-flex items-center">
+                                <input type="checkbox" name="remove_logo" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                <span class="ml-2 text-xs text-gray-600">Remove logo</span>
+                            </label>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label for="store_favicon" class="block text-sm font-medium text-gray-700 mb-1">Favicon</label>
+                    <div class="flex items-center">
+                        <div class="relative">
+                            {% if settings.store_favicon %}
+                                <img src="{{ settings.store_favicon.url }}" alt="Favicon" class="h-12 w-12 rounded-md object-contain border border-gray-200">
+                            {% else %}
+                                <div class="h-12 w-12 rounded-md bg-gray-100 flex items-center justify-center border border-gray-200">
+                                    <i class="fas fa-laptop-code text-gray-400"></i>
+                                </div>
+                            {% endif %}
+                            <input type="file" id="store_favicon" name="store_favicon" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                        </div>
+                        <div class="ml-4 flex flex-col space-y-1">
+                            <button type="button" onclick="document.getElementById('store_favicon').click()" 
+                                    class="text-sm bg-white py-1 px-3 border border-gray-300 rounded-md shadow-sm text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                Change Favicon
+                            </button>
+                            {% if settings.store_favicon %}
+                            <label class="inline-flex items-center">
+                                <input type="checkbox" name="remove_favicon" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                <span class="ml-2 text-xs text-gray-600">Remove favicon</span>
+                            </label>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Business Hours Section -->
+        <div class="border-b border-gray-200 px-6 py-4 bg-gray-50">
+            <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                <i class="fas fa-clock text-blue-500 mr-2"></i> Business Hours
+            </h3>
+            <p class="mt-1 text-sm text-gray-500">Set your store's operating hours for customer reference.</p>
+        </div>
+        
+        <div class="px-6 py-4 space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="opening_time" class="block text-sm font-medium text-gray-700 mb-1">Opening Time</label>
+                    <input type="time" id="opening_time" name="opening_time" 
+                           value="{{ settings.opening_time|default:'09:00' }}" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm">
+                </div>
+                <div>
+                    <label for="closing_time" class="block text-sm font-medium text-gray-700 mb-1">Closing Time</label>
+                    <input type="time" id="closing_time" name="closing_time" 
+                           value="{{ settings.closing_time|default:'18:00' }}" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm">
+                </div>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Working Days</label>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-7 gap-2">
+                    {% for day in week_days %}
+                    <label class="inline-flex items-center">
+                        <input type="checkbox" name="working_days" value="{{ day.0 }}" 
+                               {% if day.0 in settings.working_days %}checked{% endif %}
+                               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                        <span class="ml-2 text-sm text-gray-700">{{ day.1 }}</span>
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Information Section -->
+        <div class="border-b border-gray-200 px-6 py-4 bg-gray-50">
+            <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                <i class="fas fa-phone-alt text-blue-500 mr-2"></i> Contact Information
+            </h3>
+            <p class="mt-1 text-sm text-gray-500">How customers can get in touch with your business.</p>
+        </div>
+        
+        <div class="px-6 py-4 space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="store_email" class="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+                    <input type="email" id="store_email" name="store_email" 
+                           value="{{ settings.store_email|default:'contact@maphixzglobal.com' }}" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm" required>
+                </div>
+                <div>
+                    <label for="store_phone" class="block text-sm font-medium text-gray-700 mb-1">Phone *</label>
+                    <input type="tel" id="store_phone" name="store_phone" 
+                           value="{{ settings.store_phone|default:'+234 123 456 7890' }}" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm" required>
+                </div>
+            </div>
+            
+            <div>
+                <label for="store_address" class="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                <textarea id="store_address" name="store_address" rows="2"
+                          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm">{{ settings.store_address|default:'123 Tech Street, Computer Village, Ikeja, Lagos' }}</textarea>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label for="store_city" class="block text-sm font-medium text-gray-700 mb-1">City</label>
+                    <input type="text" id="store_city" name="store_city" 
+                           value="{{ settings.store_city|default:'Lagos' }}" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm">
+                </div>
+                <div>
+                    <label for="store_state" class="block text-sm font-medium text-gray-700 mb-1">State</label>
+                    <input type="text" id="store_state" name="store_state" 
+                           value="{{ settings.store_state|default:'Lagos' }}" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm">
+                </div>
+                <div>
+                    <label for="store_country" class="block text-sm font-medium text-gray-700 mb-1">Country</label>
+                    <select id="store_country" name="store_country" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm">
+                        <option value="NG" {% if settings.store_country == 'NG' %}selected{% endif %}>Nigeria</option>
+                        <option value="GH" {% if settings.store_country == 'GH' %}selected{% endif %}>Ghana</option>
+                        <option value="US" {% if settings.store_country == 'US' %}selected{% endif %}>United States</option>
+                        <option value="UK" {% if settings.store_country == 'UK' %}selected{% endif %}>United Kingdom</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Social Media Section -->
+        <div class="border-b border-gray-200 px-6 py-4 bg-gray-50">
+            <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                <i class="fas fa-share-alt text-blue-500 mr-2"></i> Social Media
+            </h3>
+            <p class="mt-1 text-sm text-gray-500">Connect your social media accounts to increase engagement.</p>
+        </div>
+        
+        <div class="px-6 py-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fab fa-whatsapp text-green-500"></i>
+                    </div>
+                    <input type="text" id="whatsapp" name="whatsapp" 
+                           value="{{ settings.whatsapp|default:'+2341234567890' }}" 
+                           class="pl-10 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm" placeholder="WhatsApp number">
+                </div>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fab fa-instagram text-pink-600"></i>
+                    </div>
+                    <input type="url" id="instagram" name="instagram" 
+                           value="{{ settings.instagram|default:'https://instagram.com/maphixzglobal' }}" 
+                           class="pl-10 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm" placeholder="Instagram URL">
+                </div>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fab fa-facebook-f text-blue-600"></i>
+                    </div>
+                    <input type="url" id="facebook" name="facebook" 
+                           value="{{ settings.facebook|default:'https://facebook.com/maphixzglobal' }}" 
+                           class="pl-10 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm" placeholder="Facebook URL">
+                </div>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fab fa-twitter text-blue-400"></i>
+                    </div>
+                    <input type="url" id="twitter" name="twitter" 
+                           value="{{ settings.twitter|default:'https://twitter.com/maphixzglobal' }}" 
+                           class="pl-10 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm" placeholder="Twitter URL">
+                </div>
+            </div>
+        </div>
+
+        <!-- Repair Services Section -->
+        <div class="border-b border-gray-200 px-6 py-4 bg-gray-50">
+            <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                <i class="fas fa-tools text-blue-500 mr-2"></i> Repair Services
+            </h3>
+            <p class="mt-1 text-sm text-gray-500">Configure your laptop repair service settings.</p>
+        </div>
+        
+        <div class="px-6 py-4 space-y-4">
+            <div>
+                <label for="repair_lead_time" class="block text-sm font-medium text-gray-700 mb-1">Standard Repair Lead Time (days)</label>
+                <input type="number" id="repair_lead_time" name="repair_lead_time" min="1" 
+                       value="{{ settings.repair_lead_time|default:'3' }}" 
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm">
+            </div>
+            
+            <div>
+                <label for="repair_warranty" class="block text-sm font-medium text-gray-700 mb-1">Repair Warranty Period (days)</label>
+                <input type="number" id="repair_warranty" name="repair_warranty" min="0" 
+                       value="{{ settings.repair_warranty|default:'30' }}" 
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm">
+            </div>
+            
+            <div>
+                <label for="repair_terms" class="block text-sm font-medium text-gray-700 mb-1">Repair Terms & Conditions</label>
+                <textarea id="repair_terms" name="repair_terms" rows="4"
+                          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm">{{ settings.repair_terms|default:'1. Warranty covers only the repaired component for the specified period\n2. Physical damage voids warranty\n3. Backup your data before submission' }}</textarea>
+            </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="px-6 py-4 bg-gray-50 text-right border-t border-gray-200">
+            <button type="reset" class="mr-3 inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                <i class="fas fa-undo mr-2"></i> Reset
+            </button>
+            <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                <i class="fas fa-save mr-2"></i> Save Settings
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle file input changes
+    document.getElementById('store_logo').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const preview = document.querySelector('#store_logo').previousElementSibling;
+                if (preview.tagName === 'IMG') {
+                    preview.src = event.target.result;
+                } else {
+                    const img = document.createElement('img');
+                    img.src = event.target.result;
+                    img.className = 'h-16 w-16 rounded-md object-contain border border-gray-200';
+                    preview.replaceWith(img);
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    document.getElementById('store_favicon').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const preview = document.querySelector('#store_favicon').previousElementSibling;
+                if (preview.tagName === 'IMG') {
+                    preview.src = event.target.result;
+                } else {
+                    const img = document.createElement('img');
+                    img.src = event.target.result;
+                    img.className = 'h-12 w-12 rounded-md object-contain border border-gray-200';
+                    preview.replaceWith(img);
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+});
+</script>
+{% endblock %}

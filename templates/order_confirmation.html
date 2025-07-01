@@ -1,0 +1,273 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Order Confirmation - Maphixz Global{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8 max-w-7xl">
+    <!-- Confirmation Header -->
+    <div class="text-center mb-8">
+        <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-check-circle text-green-600 text-5xl"></i>
+        </div>
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-light-100 mb-2">Order Confirmed!</h1>
+        <p class="text-lg text-gray-600 dark:text-light-500">Thank you for your order. We'll process it shortly.</p>
+    </div>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Main Content Column -->
+        <div class="lg:col-span-2 space-y-6">
+            <!-- Order Summary -->
+            <div class="bg-white dark:bg-dark-700 rounded-xl shadow-sm overflow-hidden border border-gray-200 dark:border-dark-600">
+                <div class="px-6 py-4 border-b border-gray-200 dark:border-dark-600">
+                    <h2 class="text-xl font-semibold text-gray-900 dark:text-light-100">Order Summary</h2>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500 dark:text-light-500 uppercase tracking-wider mb-2">Order Details</h3>
+                            <p class="text-gray-900 dark:text-light-100 mb-1"><span class="font-medium">Order ID:</span> #{{ order.id }}</p>
+                            <p class="text-gray-900 dark:text-light-100 mb-1"><span class="font-medium">Date:</span> {{ order.created_at|date:"F j, Y" }}</p>
+                            <p class="text-gray-900 dark:text-light-100">
+                                <span class="font-medium">Status:</span> 
+                                <span class="px-2 py-1 rounded-full text-xs font-medium 
+                                    {% if order.status == 'processing' %}bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200
+                                    {% elif order.status == 'completed' %}bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200
+                                    {% else %}bg-gray-100 dark:bg-dark-600 text-gray-800 dark:text-light-300{% endif %}">
+                                    {{ order.status|title }}
+                                </span>
+                            </p>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500 dark:text-light-500 uppercase tracking-wider mb-2">Payment</h3>
+                            <p class="text-gray-900 dark:text-light-100 mb-1">
+                                <span class="font-medium">Method:</span> 
+                                {% if order.payment_method == 'online' %}
+                                    <i class="fas fa-credit-card text-blue-500 ml-1"></i> Online Payment
+                                {% else %}
+                                    <i class="fas fa-money-bill-wave text-green-500 ml-1"></i> Cash on Delivery
+                                {% endif %}
+                            </p>
+                            <p class="text-gray-900 dark:text-light-100 mb-1"><span class="font-medium">Total:</span> ${{ order.total_amount|floatformat:2 }}</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Order Items -->
+                    <h3 class="text-sm font-medium text-gray-500 dark:text-light-500 uppercase tracking-wider mb-4">Items Ordered</h3>
+                    <div class="space-y-4">
+                        {% for item in order.items.all %}
+                        <div class="flex items-start border-b border-gray-200 dark:border-dark-600 pb-4">
+                            <div class="w-20 h-20 bg-gray-100 dark:bg-dark-600 rounded-lg flex-shrink-0 flex items-center justify-center mr-4">
+                                {% if item.product.image %}
+                                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="w-full h-full object-contain">
+                                {% else %}
+                                    <i class="fas fa-laptop text-gray-400 text-xl"></i>
+                                {% endif %}
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="font-medium text-gray-900 dark:text-light-100">{{ item.product.name }}</h4>
+                                <div class="flex items-center text-sm text-gray-500 dark:text-light-500 mt-1">
+                                    <span class="mr-3">Qty: {{ item.quantity }}</span>
+                                    <span>${{ item.price|floatformat:2 }} each</span>
+                                </div>
+                                {% if item.product.is_refurbished %}
+                                <span class="inline-block mt-1 px-2 py-0.5 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs font-medium rounded-full">
+                                    <i class="fas fa-recycle mr-1"></i> Refurbished
+                                </span>
+                                {% endif %}
+                            </div>
+                            <div class="font-medium text-gray-900 dark:text-light-100">${{ item.get_cost|floatformat:2 }}</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <!-- Order Totals -->
+                    <div class="mt-6 space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-light-500">Subtotal</span>
+                            <span class="text-gray-900 dark:text-light-100">${{ order.get_subtotal|floatformat:2 }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-light-500">Shipping</span>
+                            <span class="text-gray-900 dark:text-light-100">${{ order.shipping_cost|floatformat:2 }}</span>
+                        </div>
+                        {% if order.discount_amount > 0 %}
+                        <div class="flex justify-between text-green-600 dark:text-green-400">
+                            <span>Discount</span>
+                            <span>-${{ order.discount_amount|floatformat:2 }}</span>
+                        </div>
+                        {% endif %}
+                        <div class="flex justify-between border-t border-gray-200 dark:border-dark-600 pt-3 mt-3">
+                            <span class="font-medium text-gray-900 dark:text-light-100">Total</span>
+                            <span class="font-bold text-lg text-gray-900 dark:text-light-100">${{ order.total_amount|floatformat:2 }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Customer Information -->
+            <div class="bg-white dark:bg-dark-700 rounded-xl shadow-sm overflow-hidden border border-gray-200 dark:border-dark-600">
+                <div class="px-6 py-4 border-b border-gray-200 dark:border-dark-600">
+                    <h2 class="text-xl font-semibold text-gray-900 dark:text-light-100">Customer Information</h2>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500 dark:text-light-500 uppercase tracking-wider mb-3">Contact</h3>
+                            <p class="text-gray-900 dark:text-light-100 mb-2">
+                                <i class="fas fa-user mr-2 text-gray-400 dark:text-dark-400"></i>
+                                {{ order.first_name }} {{ order.last_name }}
+                            </p>
+                            <p class="text-gray-900 dark:text-light-100 mb-2">
+                                <i class="fas fa-envelope mr-2 text-gray-400 dark:text-dark-400"></i>
+                                {{ order.email }}
+                            </p>
+                            <p class="text-gray-900 dark:text-light-100">
+                                <i class="fas fa-phone mr-2 text-gray-400 dark:text-dark-400"></i>
+                                {{ order.phone }}
+                            </p>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500 dark:text-light-500 uppercase tracking-wider mb-3">Delivery</h3>
+                            <p class="text-gray-900 dark:text-light-100 mb-2">
+                                <i class="fas fa-truck mr-2 text-gray-400 dark:text-dark-400"></i>
+                                {{ order.shipping_method|title }}
+                            </p>
+                            <p class="text-gray-900 dark:text-light-100">
+                                <i class="fas fa-map-marker-alt mr-2 text-gray-400 dark:text-dark-400"></i>
+                                {{ order.address }}, {{ order.city }}, {{ order.postal_code }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Next Steps -->
+            <div class="bg-white dark:bg-dark-700 rounded-xl shadow-sm overflow-hidden border border-gray-200 dark:border-dark-600">
+                <div class="px-6 py-4 border-b border-gray-200 dark:border-dark-600">
+                    <h2 class="text-xl font-semibold text-gray-900 dark:text-light-100">What Happens Next?</h2>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-4">
+                                <i class="fas fa-envelope text-blue-600 dark:text-blue-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-900 dark:text-light-100 mb-1">Order Confirmation</h3>
+                                <p class="text-gray-600 dark:text-light-500">You'll receive an email confirmation with your order details shortly.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center mr-4">
+                                <i class="fas fa-laptop-code text-purple-600 dark:text-purple-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-900 dark:text-light-100 mb-1">Processing</h3>
+                                <p class="text-gray-600 dark:text-light-500">
+                                    Our technicians will prepare your {% if order.has_refurbished_items %}refurbished{% endif %} laptop(s) 
+                                    with care, ensuring all components meet our quality standards.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center mr-4">
+                                <i class="fas fa-shipping-fast text-green-600 dark:text-green-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-900 dark:text-light-100 mb-1">Shipping</h3>
+                                <p class="text-gray-600 dark:text-light-500">
+                                    Once your order is ready, we'll ship it to you and send tracking information to your email.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        {% if order.has_refurbished_items %}
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-yellow-100 dark:bg-yellow-900 flex items-center justify-center mr-4">
+                                <i class="fas fa-shield-alt text-yellow-600 dark:text-yellow-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-900 dark:text-light-100 mb-1">Warranty Information</h3>
+                                <p class="text-gray-600 dark:text-light-500">
+                                    Your refurbished laptop comes with a {{ order.get_warranty_period }} warranty. 
+                                    Warranty details will be included in your shipment.
+                                </p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar Column -->
+        <div class="space-y-6">
+            <!-- Support Card -->
+            <div class="bg-white dark:bg-dark-700 rounded-xl shadow-sm overflow-hidden border border-gray-200 dark:border-dark-600">
+                <div class="px-6 py-4 border-b border-gray-200 dark:border-dark-600 bg-blue-50 dark:bg-blue-900/30">
+                    <h2 class="text-lg font-semibold text-gray-900 dark:text-light-100">
+                        <i class="fas fa-headset mr-2 text-blue-600 dark:text-blue-400"></i>
+                        Need Help?
+                    </h2>
+                </div>
+                <div class="p-6">
+                    <p class="text-gray-600 dark:text-light-500 mb-4">
+                        Our technical support team is available to assist you with any questions about your order or products.
+                    </p>
+                    <a href="mailto:support@maphixzglobal.com" class="block w-full bg-blue-600 hover:bg-blue-700 text-white text-center py-2 rounded-lg mb-3 transition duration-200">
+                        <i class="fas fa-envelope mr-2"></i> Email Support
+                    </a>
+                    <a href="tel:+1234567890" class="block w-full bg-gray-100 hover:bg-gray-200 dark:bg-dark-600 dark:hover:bg-dark-500 text-gray-800 dark:text-light-100 text-center py-2 rounded-lg transition duration-200">
+                        <i class="fas fa-phone mr-2"></i> Call Support
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Warranty & Services -->
+            <div class="bg-white dark:bg-dark-700 rounded-xl shadow-sm overflow-hidden border border-gray-200 dark:border-dark-600">
+                <div class="px-6 py-4 border-b border-gray-200 dark:border-dark-600 bg-purple-50 dark:bg-purple-900/30">
+                    <h2 class="text-lg font-semibold text-gray-900 dark:text-light-100">
+                        <i class="fas fa-shield-alt mr-2 text-purple-600 dark:text-purple-400"></i>
+                        Warranty & Services
+                    </h2>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <div>
+                            <h3 class="font-medium text-gray-900 dark:text-light-100 mb-1">Standard Warranty</h3>
+                            <p class="text-sm text-gray-600 dark:text-light-500">
+                                All laptops come with a 1-year limited warranty covering hardware defects.
+                            </p>
+                        </div>
+                        <div>
+                            <h3 class="font-medium text-gray-900 dark:text-light-100 mb-1">Extended Warranty</h3>
+                            <p class="text-sm text-gray-600 dark:text-light-500">
+                                Extend your coverage up to 3 years. Available for purchase within 30 days of delivery.
+                            </p>
+                        </div>
+                        <div>
+                            <h3 class="font-medium text-gray-900 dark:text-light-100 mb-1">Repair Services</h3>
+                            <p class="text-sm text-gray-600 dark:text-light-500">
+                                Our certified technicians provide expert repair services for all laptop brands.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Continue Shopping -->
+            <div class="text-center">
+                <a href="{% url 'store:product_list' %}" class="inline-block bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg font-medium transition duration-200">
+                    <i class="fas fa-laptop mr-2"></i> Browse More Laptops
+                </a>
+                <p class="text-sm text-gray-500 dark:text-light-500 mt-3">
+                    Looking for accessories or upgrades? Check out our selection of laptop bags, mice, and RAM upgrades.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

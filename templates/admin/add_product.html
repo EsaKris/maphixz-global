@@ -1,0 +1,368 @@
+{% extends "admin/admin_base.html" %}
+
+{% block page_title %}Add Product{% endblock %}
+{% block page_subtitle %}Add new laptop or service{% endblock %}
+
+{% block admin_content %}
+<!-- Back Button -->
+<div class="mb-6">
+    <a href="{% url 'store:admin_products' %}" 
+       class="inline-flex items-center text-gray-600 hover:text-gray-900 transition duration-200">
+        <i class="fas fa-arrow-left mr-2"></i>
+        Back to Products
+    </a>
+</div>
+
+<div class="max-w-5xl">
+    <form method="post" enctype="multipart/form-data" class="space-y-8">
+        {% csrf_token %}
+        
+        <!-- Basic Information -->
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <h3 class="text-lg font-semibold text-gray-900 mb-6">Basic Information</h3>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Product Name -->
+                <div class="lg:col-span-2">
+                    <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
+                        Product Name <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" id="name" name="name" required
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition duration-200"
+                           placeholder="e.g., Dell XPS 15 (2025), 16GB RAM, 1TB SSD">
+                </div>
+                
+                <!-- Category -->
+                <div>
+                    <label for="category" class="block text-sm font-medium text-gray-700 mb-2">
+                        Category <span class="text-red-500">*</span>
+                    </label>
+                    <select id="category" name="category" required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition duration-200">
+                        <option value="">Select a category</option>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <!-- Brand -->
+                <div>
+                    <label for="brand" class="block text-sm font-medium text-gray-700 mb-2">
+                        Brand <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" id="brand" name="brand" required
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition duration-200"
+                           placeholder="e.g., Dell, HP, Lenovo">
+                </div>
+                
+                <!-- Price -->
+                <div>
+                    <label for="price" class="block text-sm font-medium text-gray-700 mb-2">
+                        Price ({{ currency }}) <span class="text-red-500">*</span>
+                    </label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-3 text-gray-500">{{ currency_symbol }}</span>
+                        <input type="number" id="price" name="price" step="0.01" min="0" required
+                               class="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition duration-200"
+                               placeholder="0.00">
+                    </div>
+                </div>
+                
+                <!-- Discount Price -->
+                <div>
+                    <label for="discount_price" class="block text-sm font-medium text-gray-700 mb-2">
+                        Discount Price (optional)
+                    </label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-3 text-gray-500">{{ currency_symbol }}</span>
+                        <input type="number" id="discount_price" name="discount_price" step="0.01" min="0"
+                               class="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition duration-200"
+                               placeholder="0.00">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Description -->
+            <div class="mt-6">
+                <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
+                    Product Description <span class="text-red-500">*</span>
+                </label>
+                <textarea id="description" name="description" rows="4" required
+                          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition duration-200"
+                          placeholder="Describe the product specifications, condition, and features..."></textarea>
+                <p class="text-xs text-gray-500 mt-1">Include key specs like processor, RAM, storage, and any included accessories.</p>
+            </div>
+        </div>
+
+        <!-- Technical Specifications -->
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <h3 class="text-lg font-semibold text-gray-900 mb-6">Technical Specifications</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Processor -->
+                <div>
+                    <label for="processor" class="block text-sm font-medium text-gray-700 mb-2">
+                        Processor
+                    </label>
+                    <input type="text" id="processor" name="processor"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition duration-200"
+                           placeholder="e.g., Intel Core i7-12700H">
+                </div>
+                
+                <!-- RAM -->
+                <div>
+                    <label for="ram" class="block text-sm font-medium text-gray-700 mb-2">
+                        Memory (RAM)
+                    </label>
+                    <input type="text" id="ram" name="ram"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition duration-200"
+                           placeholder="e.g., 16GB DDR4">
+                </div>
+                
+                <!-- Storage -->
+                <div>
+                    <label for="storage" class="block text-sm font-medium text-gray-700 mb-2">
+                        Storage
+                    </label>
+                    <input type="text" id="storage" name="storage"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition duration-200"
+                           placeholder="e.g., 1TB NVMe SSD">
+                </div>
+                
+                <!-- Graphics -->
+                <div>
+                    <label for="graphics" class="block text-sm font-medium text-gray-700 mb-2">
+                        Graphics
+                    </label>
+                    <input type="text" id="graphics" name="graphics"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition duration-200"
+                           placeholder="e.g., NVIDIA RTX 3050 Ti">
+                </div>
+                
+                <!-- Display -->
+                <div>
+                    <label for="display" class="block text-sm font-medium text-gray-700 mb-2">
+                        Display
+                    </label>
+                    <input type="text" id="display" name="display"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition duration-200"
+                           placeholder="e.g., 15.6\" FHD IPS 120Hz">
+                </div>
+                
+                <!-- Operating System -->
+                <div>
+                    <label for="operating_system" class="block text-sm font-medium text-gray-700 mb-2">
+                        Operating System
+                    </label>
+                    <input type="text" id="operating_system" name="operating_system"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition duration-200"
+                           placeholder="e.g., Windows 11 Pro">
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Settings -->
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <h3 class="text-lg font-semibold text-gray-900 mb-6">Product Settings</h3>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Stock Status -->
+                <div>
+                    <label for="stock_status" class="block text-sm font-medium text-gray-700 mb-2">
+                        Stock Status <span class="text-red-500">*</span>
+                    </label>
+                    <select id="stock_status" name="stock_status" required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition duration-200">
+                        {% for value, label in stock_choices %}
+                            <option value="{{ value }}" {% if value == 'available' %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <!-- Stock Quantity -->
+                <div>
+                    <label for="stock_quantity" class="block text-sm font-medium text-gray-700 mb-2">
+                        Stock Quantity
+                    </label>
+                    <input type="number" id="stock_quantity" name="stock_quantity" min="0"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition duration-200"
+                           placeholder="Leave empty if not applicable">
+                </div>
+                
+                <!-- Condition -->
+                <div>
+                    <label for="is_refurbished" class="block text-sm font-medium text-gray-700 mb-2">
+                        Product Condition
+                    </label>
+                    <div class="flex space-x-4">
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="is_refurbished" value="0" class="form-radio text-blue-600" checked>
+                            <span class="ml-2">New</span>
+                        </label>
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="is_refurbished" value="1" class="form-radio text-blue-600">
+                            <span class="ml-2">Refurbished</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Featured Product -->
+                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                    <div>
+                        <label for="featured" class="text-sm font-medium text-gray-900">Featured Product</label>
+                        <p class="text-xs text-gray-500">Show this product prominently</p>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="featured" name="featured" class="sr-only peer">
+                        <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Media -->
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <h3 class="text-lg font-semibold text-gray-900 mb-6">Product Media</h3>
+            
+            <!-- Image Upload -->
+            <div class="mb-8">
+                <h4 class="text-md font-medium text-gray-800 mb-4">Product Images</h4>
+                <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-500 transition duration-200">
+                    <div id="uploadPrompt">
+                        <i class="fas fa-laptop text-4xl text-gray-400 mb-4"></i>
+                        <h4 class="text-lg font-medium text-gray-900 mb-2">Upload Laptop Images</h4>
+                        <p class="text-gray-500 mb-4">Show multiple angles of the laptop (max 5 images)</p>
+                        <input type="file" id="images" name="images" accept="image/*" class="hidden" multiple>
+                        <button type="button" onclick="document.getElementById('images').click()"
+                                class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200">
+                            <i class="fas fa-upload mr-2"></i>
+                            Choose Images
+                        </button>
+                        <p class="text-xs text-gray-400 mt-2">PNG, JPG up to 10MB each</p>
+                    </div>
+                    <div id="imagePreview" class="flex flex-wrap gap-4 mt-4"></div>
+                </div>
+            </div>
+            
+            <!-- Video Upload -->
+            <div class="mt-8">
+                <h4 class="text-md font-medium text-gray-800 mb-4">Product Video (Optional)</h4>
+                <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-500 transition duration-200">
+                    <div id="videoPreview" class="hidden">
+                        <video id="previewVideo" controls class="max-w-full h-48 mx-auto rounded-lg"></video>
+                        <button type="button" onclick="removeVideo()" 
+                                class="mt-4 text-red-600 hover:text-red-700 transition duration-200">
+                            <i class="fas fa-trash mr-1"></i>Remove Video
+                        </button>
+                    </div>
+                    
+                    <div id="videoUploadPrompt">
+                        <i class="fas fa-video text-4xl text-gray-400 mb-4"></i>
+                        <h4 class="text-lg font-medium text-gray-900 mb-2">Upload Product Video</h4>
+                        <p class="text-gray-500 mb-4">Show the laptop in action</p>
+                        <input type="file" id="video" name="video" accept="video/*" class="hidden">
+                        <button type="button" onclick="document.getElementById('video').click()"
+                                class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200">
+                            <i class="fas fa-upload mr-2"></i>
+                            Choose Video
+                        </button>
+                        <p class="text-xs text-gray-400 mt-2">MP4 format, max 50MB</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="flex items-center justify-between">
+            <a href="{% url 'store:admin_products' %}" 
+               class="inline-flex items-center px-6 py-3 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition duration-200">
+                <i class="fas fa-times mr-2"></i>
+                Cancel
+            </a>
+            
+            <div class="flex space-x-3">
+                <button type="submit" name="save_and_continue" 
+                        class="inline-flex items-center px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition duration-200">
+                    <i class="fas fa-save mr-2"></i>
+                    Save & Add Another
+                </button>
+                <button type="submit" 
+                        class="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200 shadow-sm">
+                    <i class="fas fa-check mr-2"></i>
+                    Create Product
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+// Image upload preview
+document.getElementById('images').addEventListener('change', function(e) {
+    const preview = document.getElementById('imagePreview');
+    preview.innerHTML = '';
+    const files = Array.from(e.target.files).slice(0, 5);
+    files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function(ev) {
+            const img = document.createElement('img');
+            img.src = ev.target.result;
+            img.className = "max-w-[120px] h-24 rounded shadow";
+            preview.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+    });
+});
+
+// Remove image
+function removeImage() {
+    document.getElementById('image').value = '';
+    document.getElementById('imagePreview').classList.add('hidden');
+    document.getElementById('uploadPrompt').classList.remove('hidden');
+}
+
+// Video upload preview
+document.getElementById('video').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const video = document.getElementById('previewVideo');
+        video.src = URL.createObjectURL(file);
+        document.getElementById('videoPreview').classList.remove('hidden');
+        document.getElementById('videoUploadPrompt').classList.add('hidden');
+    }
+});
+
+// Remove video
+function removeVideo() {
+    document.getElementById('video').value = '';
+    document.getElementById('videoPreview').classList.add('hidden');
+    document.getElementById('videoUploadPrompt').classList.remove('hidden');
+}
+
+// Form validation
+document.querySelector('form').addEventListener('submit', function(e) {
+    const requiredFields = ['name', 'category', 'price', 'description'];
+    let isValid = true;
+    
+    requiredFields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (!field.value.trim()) {
+            field.classList.add('border-red-500');
+            isValid = false;
+        } else {
+            field.classList.remove('border-red-500');
+        }
+    });
+    
+    if (!isValid) {
+        e.preventDefault();
+        alert('Please fill in all required fields marked with *');
+    } else {
+        const submitBtn = e.submitter;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
+        submitBtn.disabled = true;
+    }
+});
+</script>
+{% endblock %}

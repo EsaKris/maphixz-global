@@ -1,0 +1,395 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Maphixz Global | Laptop Sales & Repair{% endblock %}</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'images/favicon/favicon.ico' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/favicon/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'images/favicon/site.webmanifest' %}">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Roboto Mono', 'monospace'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        secondary: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            200: '#ddd6fe',
+                            300: '#c4b5fd',
+                            400: '#a78bfa',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            800: '#5b21b6',
+                            900: '#4c1d95',
+                        },
+                        dark: {
+                            900: '#0f172a',
+                            800: '#1e293b',
+                            700: '#334155',
+                            600: '#475569',
+                        },
+                        light: {
+                            100: '#f8fafc',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                        },
+                        accent: {
+                            danger: '#ef4444',
+                            warning: '#f59e0b',
+                            success: '#10b981',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 3s linear infinite',
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <style>
+        .tech-gradient-text {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            background-image: linear-gradient(45deg, #38bdf8, #8b5cf6);
+        }
+        .tech-glass-effect {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .light .tech-glass-effect {
+            background: rgba(248, 250, 252, 0.8);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        .product-card:hover .product-actions {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .product-actions {
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            line-height: 1;
+        }
+        .status-badge {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            z-index: 10;
+        }
+    </style>
+    
+    {% block head %}{% endblock %}
+</head>
+<body class="bg-light-100 text-dark-900 font-sans antialiased dark:bg-dark-900 dark:text-light-100 transition-colors duration-200">
+    <!-- Navigation (Now with Logo + Hamburger Menu) -->
+    <nav class="fixed w-full z-50 tech-glass-effect shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <!-- Logo with Image -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="{% url 'store:home' %}" class="flex items-center">
+                        <img src="{% static 'images/logo.png' %}" alt="Maphixz Logo" class="h-8 w-auto mr-2">
+                        <span class="text-2xl font-bold">
+                            <span class="tech-gradient-text">Maphixz</span>
+                        </span>
+                        <span class="ml-1 text-xs font-mono font-medium bg-primary-600 text-white px-1.5 py-0.5 rounded">Global</span>
+                    </a>
+                </div>
+
+                <!-- Desktop Menu (Hidden on Mobile) -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="{% url 'store:home' %}" class="text-light-100 hover:text-primary-400 transition-colors font-medium dark:text-light-100">Home</a>
+                    <a href="{% url 'store:product_list' %}" class="text-light-100 hover:text-primary-400 transition-colors font-medium dark:text-light-100">Shop</a>
+                    
+                    <div class="relative group">
+                        <button class="flex items-center text-light-100 hover:text-primary-400 transition-colors font-medium dark:text-light-100">
+                            Services <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <div class="absolute left-0 mt-2 w-48 bg-dark-800 rounded-md shadow-lg py-1 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform group-hover:translate-y-0 -translate-y-2 dark:bg-dark-700">
+                            <a href="{% url 'store:services' %}" class="block px-4 py-2 text-sm text-light-300 hover:bg-primary-900 hover:text-primary-400 dark:text-light-200">All Services</a>
+                            <a href="{% url 'store:services' %}?type=repair" class="block px-4 py-2 text-sm text-light-300 hover:bg-primary-900 hover:text-primary-400 dark:text-light-200">Laptop Repair</a>
+                            <a href="{% url 'store:services' %}?type=upgrade" class="block px-4 py-2 text-sm text-light-300 hover:bg-primary-900 hover:text-primary-400 dark:text-light-200">Hardware Upgrade</a>
+                            <a href="{% url 'store:services' %}?type=software" class="block px-4 py-2 text-sm text-light-300 hover:bg-primary-900 hover:text-primary-400 dark:text-light-200">Software Solutions</a>
+                        </div>
+                    </div>
+                    
+                    <a href="{% url 'store:contact' %}" class="text-light-100 hover:text-primary-400 transition-colors font-medium dark:text-light-100">Contact</a>
+                </div>
+
+                <!-- Right Side (Cart, Theme Toggle, Hamburger) -->
+                <div class="flex items-center space-x-4">
+                    <!-- Search (Hidden on Mobile) -->
+                    <form method="GET" action="{% url 'store:product_list' %}" class="hidden md:block">
+                        <div class="relative">
+                            <input type="search" name="search" placeholder="Search products..." 
+                                   class="pl-10 pr-4 py-2 rounded-full border border-dark-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent w-64 bg-dark-700 text-light-100 placeholder-light-300 dark:bg-dark-800 dark:border-dark-600"
+                                   value="{{ request.GET.search }}">
+                            <div class="absolute left-3 top-2.5 text-light-300 dark:text-light-300">
+                                <i class="fas fa-search"></i>
+                            </div>
+                        </div>
+                    </form>
+                    
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" class="p-2 text-light-100 hover:text-primary-400 focus:outline-none dark:text-light-100">
+                        <i class="fas fa-moon hidden dark:block"></i>
+                        <i class="fas fa-sun block dark:hidden"></i>
+                    </button>
+                    
+                    <!-- Cart -->
+                    <a href="{% url 'store:cart' %}" class="relative p-2 text-light-100 hover:text-primary-400 dark:text-light-100">
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                        {% if cart_count > 0 %}
+                            <span class="absolute -top-1 -right-1 bg-primary-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                                {{ cart_count }}
+                            </span>
+                        {% endif %}
+                    </a>
+                    
+                    <!-- Hamburger Menu Button (Visible on Mobile) -->
+                    <button class="md:hidden text-light-100 focus:outline-none dark:text-light-100" id="mobile-menu-button">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu (Hidden by Default) -->
+        <div class="md:hidden hidden bg-dark-800 shadow-lg absolute w-full left-0 px-4 py-3 dark:bg-dark-700" id="mobile-menu">
+            <div class="space-y-3">
+                <a href="{% url 'store:home' %}" class="block py-2 text-light-100 hover:text-primary-400 dark:text-light-100">Home</a>
+                <a href="{% url 'store:product_list' %}" class="block py-2 text-light-100 hover:text-primary-400 dark:text-light-100">Shop</a>
+                
+                <div class="py-2">
+                    <button class="flex items-center justify-between w-full text-light-100 dark:text-light-100" id="services-toggle">
+                        <span>Services</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="hidden mt-2 pl-4 space-y-2" id="services-dropdown">
+                        <a href="{% url 'store:services' %}" class="block py-1 text-light-300 hover:text-primary-400 dark:text-light-200">All Services</a>
+                        <a href="{% url 'store:services' %}?type=repair" class="block py-1 text-light-300 hover:text-primary-400 dark:text-light-200">Laptop Repair</a>
+                        <a href="{% url 'store:services' %}?type=upgrade" class="block py-1 text-light-300 hover:text-primary-400 dark:text-light-200">Hardware Upgrade</a>
+                        <a href="{% url 'store:services' %}?type=software" class="block py-1 text-light-300 hover:text-primary-400 dark:text-light-200">Software Solutions</a>
+                    </div>
+                </div>
+                
+                <a href="{% url 'store:contact' %}" class="block py-2 text-light-100 hover:text-primary-400 dark:text-light-100">Contact</a>
+                
+                <!-- Mobile Search -->
+                <form method="GET" action="{% url 'store:product_list' %}" class="pt-2">
+                    <div class="relative">
+                        <input type="search" name="search" placeholder="Search products..." 
+                               class="w-full pl-10 pr-4 py-2 rounded-full border border-dark-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-dark-700 text-light-100 placeholder-light-300 dark:bg-dark-800 dark:border-dark-600"
+                               value="{{ request.GET.search }}">
+                        <div class="absolute left-3 top-2.5 text-light-300 dark:text-light-300">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- Flash Messages -->
+    {% if messages %}
+        <div class="fixed top-16 left-0 right-0 z-50 max-w-7xl mx-auto px-4">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} mb-4 p-4 rounded-lg shadow-lg {% if message.tags == 'success' %}bg-accent-success text-white{% elif message.tags == 'error' %}bg-accent-danger text-white{% else %}bg-primary-600 text-white{% endif %}">
+                    <div class="flex justify-between items-center">
+                        <span>{{ message }}</span>
+                        <button type="button" class="close" onclick="this.parentElement.parentElement.remove()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Main Content -->
+    <main class="pt-16">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark-900 text-light-100 pt-16 pb-8 dark:bg-dark-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Brand Info -->
+                <div class="md:col-span-1">
+                    <h3 class="text-2xl font-bold mb-4">
+                        <span class="tech-gradient-text">Maphixz</span>
+                        <span class="ml-1 text-xs font-mono font-medium bg-primary-600 text-white px-1.5 py-0.5 rounded">Global</span>
+                    </h3>
+                    <p class="text-light-300 mb-6">Your trusted partner for laptop sales, repairs, and tech solutions. We bring technology back to life.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-light-300 hover:text-primary-400 transition-colors"><i class="fab fa-twitter text-xl"></i></a>
+                        <a href="#" class="text-light-300 hover:text-primary-400 transition-colors"><i class="fab fa-facebook text-xl"></i></a>
+                        <a href="#" class="text-light-300 hover:text-primary-400 transition-colors"><i class="fab fa-instagram text-xl"></i></a>
+                        <a href="#" class="text-light-300 hover:text-primary-400 transition-colors"><i class="fab fa-linkedin text-xl"></i></a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Shop</h4>
+                    <ul class="space-y-2">
+                        <li><a href="{% url 'store:product_list' %}" class="text-light-300 hover:text-primary-400 transition-colors">All Products</a></li>
+                        <li><a href="{% url 'store:product_list' %}?category=laptops" class="text-light-300 hover:text-primary-400 transition-colors">Laptops</a></li>
+                        <li><a href="{% url 'store:product_list' %}?category=accessories" class="text-light-300 hover:text-primary-400 transition-colors">Accessories</a></li>
+                        <li><a href="{% url 'store:product_list' %}?category=components" class="text-light-300 hover:text-primary-400 transition-colors">Components</a></li>
+                        <li><a href="{% url 'store:product_list' %}?category=refurbished" class="text-light-300 hover:text-primary-400 transition-colors">Refurbished</a></li>
+                    </ul>
+                </div>
+
+                <!-- Services -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Services</h4>
+                    <ul class="space-y-2">
+                        <li><a href="{% url 'store:services' %}" class="text-light-300 hover:text-primary-400 transition-colors">All Services</a></li>
+                        <li><a href="{% url 'store:services' %}?type=repair" class="text-light-300 hover:text-primary-400 transition-colors">Laptop Repair</a></li>
+                        <li><a href="{% url 'store:services' %}?type=upgrade" class="text-light-300 hover:text-primary-400 transition-colors">Hardware Upgrade</a></li>
+                        <li><a href="{% url 'store:services' %}?type=software" class="text-light-300 hover:text-primary-400 transition-colors">Software Solutions</a></li>
+                        <li><a href="{% url 'store:services' %}?type=data" class="text-light-300 hover:text-primary-400 transition-colors">Data Recovery</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact & Newsletter -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact Us</h4>
+                    <p class="text-light-300 mb-4">Subscribe for tech tips and special offers.</p>
+                    <form class="flex">
+                        <input type="email" placeholder="Your email" class="px-4 py-2 rounded-l-md focus:outline-none text-dark-900 w-full">
+                        <button type="submit" class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-r-md transition-colors">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                    <div class="mt-4">
+                        <p class="text-light-300"><i class="fas fa-map-marker-alt mr-2"></i> 9 Daniel Amokachi Lane Benue, Nigeria</p>
+                        <p class="text-light-300 mt-2"><i class="fas fa-phone mr-2"></i> +234 703 349 5961</p>
+                        <p class="text-light-300 mt-2"><i class="fas fa-envelope mr-2"></i> info@maphixzglobal.com</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-dark-700 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-light-300 text-sm">&copy; 2025 Maphixz Global. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="{% url 'store:privacy_policy' %}" class="text-light-300 hover:text-primary-400 text-sm transition-colors">Privacy Policy</a>
+                    <a href="{% url 'store:terms_of_service' %}" class="text-light-300 hover:text-primary-400 text-sm transition-colors">Terms of Service</a>
+                    <a href="/maphixz-admin/" class="text-light-300 hover:text-primary-400 text-sm transition-colors">Admin</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Mobile services toggle
+        document.getElementById('services-toggle')?.addEventListener('click', function() {
+            const dropdown = document.getElementById('services-dropdown');
+            dropdown.classList.toggle('hidden');
+            const icon = this.querySelector('i');
+            icon.classList.toggle('fa-chevron-down');
+            icon.classList.toggle('fa-chevron-up');
+        });
+
+        // Theme toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+        
+        // Check for saved theme preference or use preferred color scheme
+        const savedTheme = localStorage.getItem('theme') || 
+                          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        
+        // Apply the saved theme
+        if (savedTheme === 'dark') {
+            html.classList.add('dark');
+        } else {
+            html.classList.remove('dark');
+        }
+        
+        // Toggle theme on button click
+        themeToggle.addEventListener('click', function() {
+            html.classList.toggle('dark');
+            const theme = html.classList.contains('dark') ? 'dark' : 'light';
+            localStorage.setItem('theme', theme);
+        });
+
+        // Product card hover effect for touch devices
+        document.querySelectorAll('.product-card').forEach(card => {
+            card.addEventListener('touchstart', function() {
+                this.classList.add('hover');
+            });
+            
+            document.addEventListener('touchstart', function(e) {
+                if (!card.contains(e.target)) {
+                    card.classList.remove('hover');
+                }
+            });
+        });
+    </script>
+    
+    {% block scripts %}{% endblock %}
+</body>
+</html>

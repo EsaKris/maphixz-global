@@ -1,0 +1,672 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<!-- Modern Hero Section -->
+<section class="relative bg-gradient-to-br from-gray-900 to-gray-800 text-white overflow-hidden">
+  <!-- Animated background elements -->
+  <div class="absolute inset-0 overflow-hidden opacity-20">
+    <div class="absolute top-0 left-0 w-32 h-32 bg-blue-500 rounded-full filter blur-3xl opacity-30 animate-float"></div>
+    <div class="absolute bottom-0 right-0 w-40 h-40 bg-purple-500 rounded-full filter blur-3xl opacity-30 animate-float-reverse"></div>
+  </div>
+
+  <div class="container mx-auto px-4 py-16 md:py-24 lg:py-32 relative z-10">
+    <div class="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
+      <!-- Text Content -->
+      <div class="lg:w-1/2 text-center lg:text-left">
+        <span class="inline-block mb-4 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-sm font-medium tracking-wider border border-white/20">
+          🚀 NEXT-GEN TECH
+        </span>
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight">
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">Elevate</span> Your Productivity
+        </h1>
+        <p class="text-lg text-gray-300 mb-8 max-w-lg mx-auto lg:mx-0">
+          Curated collection of high-performance laptops for creators, developers, and gamers. Free shipping & 30-day returns.
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+          <a href="{% url 'store:product_list' %}" class="px-8 py-3.5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium rounded-lg transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl">
+            <span>Explore Collection</span>
+            <i class="fas fa-chevron-right text-sm"></i>
+          </a>
+          <a href="#featured" class="px-8 py-3.5 bg-transparent border-2 border-white/30 hover:border-white/50 text-white font-medium rounded-lg transition-all flex items-center justify-center gap-2 hover:bg-white/5">
+            <i class="fas fa-sparkles"></i>
+            <span>Trending Now</span>
+          </a>
+        </div>
+
+        <!-- Trust badges - Mobile optimized -->
+        <div class="mt-10 flex flex-wrap justify-center lg:justify-start gap-4">
+          <div class="flex items-center gap-2 text-sm">
+            <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+            <span>1,000+ 5-star reviews</span>
+          </div>
+          <div class="flex items-center gap-2 text-sm">
+            <i class="fas fa-shipping-fast text-blue-300"></i>
+            <span>2-3 days delivery</span>
+          </div>
+        </div>
+      </div>
+      <!-- Hero Image with Link -->
+   <div class="lg:w-1/2 relative group">
+  <a href="{% url 'store:product_list' %}" class="block relative z-10 overflow-hidden rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300">
+    <!-- Main Product Image -->
+    <img src="https://images.unsplash.com/photo-1629131726692-1accd0c53ce0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" 
+         alt="Premium Laptop Collection"
+         class="w-full h-auto object-cover transform transition-transform duration-500 group-hover:scale-105">
+    
+    <!-- Gradient Overlay -->
+    <div class="absolute inset-0 bg-gradient-to-t from-gray-900/60 via-transparent to-transparent rounded-2xl"></div>
+    
+    <!-- Floating Badges -->
+    <div class="absolute top-4 left-4 flex flex-col space-y-2">
+      <span class="px-3 py-1 bg-blue-600/90 backdrop-blur-sm text-white text-xs font-bold rounded-full shadow-md">NEW ARRIVAL</span>
+      <span class="px-3 py-1 bg-amber-500/90 backdrop-blur-sm text-white text-xs font-bold rounded-full shadow-md">-15% OFF</span>
+    </div>
+    
+    <!-- 3D Perspective Effect Container -->
+    <div class="absolute -bottom-6 -right-6 w-32 h-32 rounded-xl border-2 border-white/20 bg-white/5 backdrop-blur-sm transform rotate-12 scale-90 group-hover:rotate-6 group-hover:scale-95 transition-all duration-500 overflow-hidden">
+      <img src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80" 
+           alt="Laptop Side View" 
+           class="w-full h-full object-cover">
+    </div>
+    
+    <!-- Floating Price Tag -->
+    <div class="absolute bottom-6 left-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+      <div class="bg-white px-4 py-2 rounded-lg shadow-lg flex items-center">
+        <span class="text-gray-900 font-bold text-lg mr-1">$1,299</span>
+        <span class="text-gray-500 line-through text-sm">$1,599</span>
+      </div>
+    </div>
+  </a>
+  
+  <!-- Floating CTA on Hover -->
+  <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+    <div class="bg-white/90 dark:bg-gray-800/90 px-6 py-3 rounded-full shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+      <span class="font-semibold text-gray-900 dark:text-white">View Collection →</span>
+    </div>
+  </div>
+</div>
+        
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Brands Section -->
+<section class="py-12 bg-gray-50 dark:bg-gray-800">
+  <div class="container mx-auto px-6">
+    <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple" class="h-8 opacity-70 hover:opacity-100 transition-opacity">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/1/18/Dell_logo_2016.svg" alt="Dell" class="h-8 opacity-70 hover:opacity-100 transition-opacity">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/a/ad/HP_logo_2012.svg" alt="HP" class="h-8 opacity-70 hover:opacity-100 transition-opacity">
+      <img src="data:image/png;base64,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" alt="Lenovo" class="h-8 opacity-70 hover:opacity-100 transition-opacity">
+      <img src="data:image/png;base64,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" alt="Asus" class="h-8 opacity-70 hover:opacity-100 transition-opacity">
+    </div>
+  </div>
+</section>
+
+<!-- Featured Products -->
+<section id="featured" class="py-20 bg-white dark:bg-gray-900">
+  <div class="container mx-auto px-6">
+    <div class="text-center mb-16">
+      <span class="inline-block mb-4 px-4 py-2 bg-blue-100 text-blue-600 rounded-full text-sm font-medium dark:bg-blue-900 dark:text-blue-200">Trending Now</span>
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">Featured <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600">Laptops</span></h2>
+      <p class="text-gray-600 max-w-2xl mx-auto dark:text-gray-300">Premium devices for work, gaming, and creativity.</p>
+    </div>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      {% for product in featured_products %}
+      <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow group relative dark:bg-gray-800">
+        <!-- Badges -->
+        <div class="absolute top-4 left-4 z-10 flex space-x-2">
+          {% if product.is_bestseller %}
+            <span class="px-3 py-1 bg-blue-600 text-white text-xs font-bold rounded-full">Bestseller</span>
+          {% endif %}
+          {% if product.is_new %}
+            <span class="px-3 py-1 bg-purple-600 text-white text-xs font-bold rounded-full">New</span>
+          {% endif %}
+          {% if product.is_refurbished %}
+            <span class="px-3 py-1 bg-green-600 text-white text-xs font-bold rounded-full">Refurbished</span>
+          {% endif %}
+        </div>
+        
+        <!-- Product Image -->
+        <div class="relative overflow-hidden h-64 bg-gray-100 dark:bg-gray-700">
+                <a href="{% url 'store:product_detail' product.slug %}">
+                    {% if product.cover_image %}
+                        <img src="{{ product.cover_image.image.url }}" alt="{{ product.name }}" class="w-full h-full object-contain bg-gray-100 dark:bg-dark-600 group-hover:scale-105 transition duration-500">
+                    {% else %}
+                        <div class="w-full h-full bg-gray-100 dark:bg-dark-600 flex items-center justify-center text-gray-400 dark:text-dark-400">
+                            <i class="fas fa-laptop text-4xl"></i>
+                        </div>
+                    {% endif %}
+                </a>
+          </div>
+          
+          <!-- Product Actions -->
+          <div class="absolute inset-0 bg-black/20 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity">
+            <a href="{% url 'store:product_detail' product.slug %}" class="w-12 h-12 bg-white rounded-full flex items-center justify-center hover:bg-blue-600 hover:text-white transition-colors dark:bg-gray-800 dark:hover:bg-blue-600">
+              <i class="fas fa-eye"></i>
+            </a>
+            {% if product.is_available %}
+            <a href="{% url 'store:add_to_cart' product.id %}" class="w-12 h-12 bg-white rounded-full flex items-center justify-center hover:bg-blue-600 hover:text-white transition-colors dark:bg-gray-800 dark:hover:bg-blue-600">
+              <i class="fas fa-shopping-cart"></i>
+            </a>
+            {% endif %}
+          
+        </div>
+        
+        <!-- Product Info -->
+        <div class="p-6">
+          <span class="text-sm text-gray-500 dark:text-gray-400">{{ product.category.name }}</span>
+          <h3 class="text-lg font-semibold mb-2 dark:text-white">{{ product.name }}</h3>
+          
+          <!-- Specs -->
+          <div class="flex flex-wrap gap-2 mb-3">
+            {% if product.processor %}
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+                <i class="fas fa-microchip mr-1"></i> {{ product.processor }}
+              </span>
+            {% endif %}
+            {% if product.ram %}
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+                <i class="fas fa-memory mr-1"></i> {{ product.ram }}
+              </span>
+            {% endif %}
+            {% if product.storage %}
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+                <i class="fas fa-hdd mr-1"></i> {{ product.storage }}
+              </span>
+            {% endif %}
+          </div>
+          
+          <!-- Price & Status -->
+          <div class="flex justify-between items-center">
+            <div>
+              <span class="text-lg font-bold text-gray-900 dark:text-white">${{ product.price }}</span>
+              {% if product.old_price %}
+                <span class="text-sm text-gray-500 line-through ml-2 dark:text-gray-400">${{ product.old_price }}</span>
+              {% endif %}
+            </div>
+            <span class="text-xs px-2 py-1 rounded-full 
+              {% if product.stock_status == 'available' %}bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200
+              {% elif product.stock_status == 'out_of_stock' %}bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200
+              {% else %}bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300{% endif %}">
+              {% if product.stock_status == 'available' %}
+                In Stock
+              {% elif product.stock_status == 'out_of_stock' %}
+                Out of Stock
+              {% else %}
+                Sold Out
+              {% endif %}
+            </span>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+<!-- Default products if none exist -->
+        <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow group relative dark:bg-gray-800">
+        <div class="absolute top-4 left-4 z-10 flex space-x-2">
+            <span class="px-3 py-1 bg-blue-600 text-white text-xs font-bold rounded-full">Bestseller</span>
+        </div>
+        <div class="relative overflow-hidden h-64 bg-gray-100 dark:bg-gray-700">
+            <img src="https://images.unsplash.com/photo-1593642634524-b40b5baae6bb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
+                alt="Premium Gaming Laptop" 
+                class="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-500">
+        </div>
+        <div class="p-6">
+            <span class="text-sm text-gray-500 dark:text-gray-400">Gaming Laptops</span>
+            <h3 class="text-lg font-semibold mb-2 dark:text-white">ProGamer XT-9000</h3>
+            <div class="flex flex-wrap gap-2 mb-3">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+                <i class="fas fa-microchip mr-1"></i> i9-13900H
+            </span>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+                <i class="fas fa-memory mr-1"></i> 32GB DDR5
+            </span>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+                <i class="fas fa-hdd mr-1"></i> 1TB NVMe
+            </span>
+            </div>
+            <div class="flex justify-between items-center">
+            <div>
+                <span class="text-lg font-bold text-gray-900 dark:text-white">$2,499</span>
+                <span class="text-sm text-gray-500 line-through ml-2 dark:text-gray-400">$2,799</span>
+            </div>
+            <span class="text-xs px-2 py-1 rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                In Stock
+            </span>
+            </div>
+        </div>
+        </div>
+
+        <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow group relative dark:bg-gray-800">
+        <div class="absolute top-4 left-4 z-10 flex space-x-2">
+            <span class="px-3 py-1 bg-purple-600 text-white text-xs font-bold rounded-full">New</span>
+        </div>
+        <div class="relative overflow-hidden h-64 bg-gray-100 dark:bg-gray-700">
+            <img src="https://images.pexels.com/photos/7974/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=800" 
+                alt="Ultrabook" 
+                class="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-500">
+        </div>
+        <div class="p-6">
+            <span class="text-sm text-gray-500 dark:text-gray-400">Ultrabooks</span>
+            <h3 class="text-lg font-semibold mb-2 dark:text-white">SlimBook Air 2023</h3>
+            <div class="flex flex-wrap gap-2 mb-3">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+                <i class="fas fa-microchip mr-1"></i> M2 Pro
+            </span>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+                <i class="fas fa-memory mr-1"></i> 16GB
+            </span>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+                <i class="fas fa-hdd mr-1"></i> 512GB SSD
+            </span>
+            </div>
+            <div class="flex justify-between items-center">
+            <div>
+                <span class="text-lg font-bold text-gray-900 dark:text-white">$1,599</span>
+            </div>
+            <span class="text-xs px-2 py-1 rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                In Stock
+            </span>
+            </div>
+        </div>
+        </div>
+
+        <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow group relative dark:bg-gray-800">
+        <div class="absolute top-4 left-4 z-10 flex space-x-2">
+            <span class="px-3 py-1 bg-green-600 text-white text-xs font-bold rounded-full">Refurbished</span>
+        </div>
+        <div class="relative overflow-hidden h-64 bg-gray-100 dark:bg-gray-700">
+            <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
+                alt="Business Laptop" 
+                class="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-500">
+        </div>
+        <div class="p-6">
+            <span class="text-sm text-gray-500 dark:text-gray-400">Business Laptops</span>
+            <h3 class="text-lg font-semibold mb-2 dark:text-white">EliteBook 840 G8</h3>
+            <div class="flex flex-wrap gap-2 mb-3">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+                <i class="fas fa-microchip mr-1"></i> i7-1165G7
+            </span>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+                <i class="fas fa-memory mr-1"></i> 16GB
+            </span>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+                <i class="fas fa-hdd mr-1"></i> 512GB SSD
+            </span>
+            </div>
+            <div class="flex justify-between items-center">
+            <div>
+                <span class="text-lg font-bold text-gray-900 dark:text-white">$899</span>
+                <span class="text-sm text-gray-500 line-through ml-2 dark:text-gray-400">$1,299</span>
+            </div>
+            <span class="text-xs px-2 py-1 rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                In Stock
+            </span>
+            </div>
+        </div>
+        </div>
+
+        <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow group relative dark:bg-gray-800">
+        <div class="relative overflow-hidden h-64 bg-gray-100 dark:bg-gray-700">
+            <img src="https://images.pexels.com/photos/2047905/pexels-photo-2047905.jpeg?auto=compress&cs=tinysrgb&w=800" 
+                alt="Budget Laptop" 
+                class="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-500">
+        </div>
+        <div class="p-6">
+            <span class="text-sm text-gray-500 dark:text-gray-400">Budget Laptops</span>
+            <h3 class="text-lg font-semibold mb-2 dark:text-white">Everyday 15</h3>
+            <div class="flex flex-wrap gap-2 mb-3">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+                <i class="fas fa-microchip mr-1"></i> i5-1135G7
+            </span>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+                <i class="fas fa-memory mr-1"></i> 8GB
+            </span>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+                <i class="fas fa-hdd mr-1"></i> 256GB SSD
+            </span>
+            </div>
+            <div class="flex justify-between items-center">
+            <div>
+                <span class="text-lg font-bold text-gray-900 dark:text-white">$649</span>
+            </div>
+            <span class="text-xs px-2 py-1 rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                In Stock
+            </span>
+            </div>
+        </div>
+        </div>
+      {% endfor %}
+    </div>
+    
+    <div class="text-center mt-12">
+      <a href="{% url 'store:product_list' %}" class="inline-flex items-center px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all">
+        <span>View All Products</span>
+        <i class="fas fa-arrow-right ml-2"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Categories Section -->
+<section class="py-20 bg-gray-50 dark:bg-gray-900">
+  <div class="container mx-auto px-6">
+    <div class="text-center mb-16">
+      <span class="inline-block mb-4 px-4 py-2 bg-blue-100 text-blue-600 rounded-full text-sm font-medium dark:bg-blue-900 dark:text-blue-200">Product Categories</span>
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">Shop by <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600">Category</span></h2>
+      <p class="text-gray-600 max-w-2xl mx-auto dark:text-gray-300">Find the perfect tech solution for your needs</p>
+    </div>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Gaming Category -->
+      <div class="group relative overflow-hidden rounded-xl h-48 bg-gray-900 shadow-lg hover:shadow-xl transition-all">
+        <img src="https://images.unsplash.com/photo-1591488320449-011701bb6704?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
+             alt="Gaming Laptops" 
+             class="w-full h-full object-cover opacity-70 group-hover:opacity-50 transition-opacity duration-300">
+        <div class="absolute inset-0 flex flex-col items-center justify-center p-4 text-center">
+          <h3 class="text-2xl font-bold text-white mb-2">Gaming</h3>
+          <p class="text-gray-300 text-sm mb-4">High-performance machines for gamers</p>
+          <button onclick="window.location.href='{% url 'store:product_list' %}?category=gaming'" 
+                  class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-sm font-medium transition-all opacity-0 group-hover:opacity-100 transform group-hover:translate-y-0 translate-y-4">
+            Browse Gaming
+          </button>
+        </div>
+      </div>
+      
+      <!-- Business Category -->
+      <div class="group relative overflow-hidden rounded-xl h-48 bg-gray-900 shadow-lg hover:shadow-xl transition-all">
+        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
+             alt="Business Laptops" 
+             class="w-full h-full object-cover opacity-70 group-hover:opacity-50 transition-opacity duration-300">
+        <div class="absolute inset-0 flex flex-col items-center justify-center p-4 text-center">
+          <h3 class="text-2xl font-bold text-white mb-2">Business</h3>
+          <p class="text-gray-300 text-sm mb-4">Professional laptops for productivity</p>
+          <button onclick="window.location.href='{% url 'store:product_list' %}?category=business'" 
+                  class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-sm font-medium transition-all opacity-0 group-hover:opacity-100 transform group-hover:translate-y-0 translate-y-4">
+            Browse Business
+          </button>
+        </div>
+      </div>
+      
+      <!-- Ultrabooks Category -->
+      <div class="group relative overflow-hidden rounded-xl h-48 bg-gray-900 shadow-lg hover:shadow-xl transition-all">
+        <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1526&q=80" 
+             alt="Ultrabooks" 
+             class="w-full h-full object-cover opacity-70 group-hover:opacity-50 transition-opacity duration-300">
+        <div class="absolute inset-0 flex flex-col items-center justify-center p-4 text-center">
+          <h3 class="text-2xl font-bold text-white mb-2">Ultrabooks</h3>
+          <p class="text-gray-300 text-sm mb-4">Sleek and lightweight for mobility</p>
+          <button onclick="window.location.href='{% url 'store:product_list' %}?category=ultrabooks'" 
+                  class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-sm font-medium transition-all opacity-0 group-hover:opacity-100 transform group-hover:translate-y-0 translate-y-4">
+            Browse Ultrabooks
+          </button>
+        </div>
+      </div>
+      
+      <!-- Budget Category -->
+      <div class="group relative overflow-hidden rounded-xl h-48 bg-gray-900 shadow-lg hover:shadow-xl transition-all">
+        <img src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80" 
+             alt="Budget Laptops" 
+             class="w-full h-full object-cover opacity-70 group-hover:opacity-50 transition-opacity duration-300">
+        <div class="absolute inset-0 flex flex-col items-center justify-center p-4 text-center">
+          <h3 class="text-2xl font-bold text-white mb-2">Budget</h3>
+          <p class="text-gray-300 text-sm mb-4">Quality tech at affordable prices</p>
+          <button onclick="window.location.href='{% url 'store:product_list' %}?category=budget'" 
+                  class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-sm font-medium transition-all opacity-0 group-hover:opacity-100 transform group-hover:translate-y-0 translate-y-4">
+            Browse Budget
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Why Choose Us -->
+<section class="py-20 bg-white dark:bg-gray-900">
+  <div class="container mx-auto px-6">
+    <div class="text-center mb-16">
+      <span class="inline-block mb-4 px-4 py-2 bg-blue-100 text-blue-600 rounded-full text-sm font-medium dark:bg-blue-900 dark:text-blue-200">Our Advantages</span>
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">Why Choose <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600">Us</span></h2>
+      <p class="text-gray-600 max-w-2xl mx-auto dark:text-gray-300">We provide the best laptop shopping experience</p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="text-center p-6 rounded-xl hover:shadow-lg transition-shadow">
+        <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6 dark:bg-blue-900">
+          <i class="fas fa-shield-alt text-3xl text-blue-600 dark:text-blue-400"></i>
+        </div>
+        <h3 class="text-xl font-semibold mb-3 dark:text-white">Quality Assurance</h3>
+        <p class="text-gray-600 dark:text-gray-300">All our laptops undergo rigorous testing to ensure they meet our high standards.</p>
+      </div>
+      
+      <div class="text-center p-6 rounded-xl hover:shadow-lg transition-shadow">
+        <div class="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6 dark:bg-purple-900">
+          <i class="fas fa-truck text-3xl text-purple-600 dark:text-purple-400"></i>
+        </div>
+        <h3 class="text-xl font-semibold mb-3 dark:text-white">Fast Shipping</h3>
+        <p class="text-gray-600 dark:text-gray-300">Get your order delivered quickly with our express shipping options.</p>
+      </div>
+      
+      <div class="text-center p-6 rounded-xl hover:shadow-lg transition-shadow">
+        <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 dark:bg-green-900">
+          <i class="fas fa-headset text-3xl text-green-600 dark:text-green-400"></i>
+        </div>
+        <h3 class="text-xl font-semibold mb-3 dark:text-white">24/7 Support</h3>
+        <p class="text-gray-600 dark:text-gray-300">Our customer service team is always ready to assist you with any questions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section class="py-20 bg-gray-50 dark:bg-gray-900">
+  <div class="container mx-auto px-6">
+    <div class="text-center mb-16">
+      <span class="inline-block mb-4 px-4 py-2 bg-blue-100 text-blue-600 rounded-full text-sm font-medium dark:bg-blue-900 dark:text-blue-200">Client Success Stories</span>
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">What Our <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600">Clients Say</span></h2>
+      <p class="text-gray-600 max-w-2xl mx-auto dark:text-gray-300">Trusted by businesses and individuals for our exceptional tech solutions.</p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Testimonial 1 -->
+      <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all dark:bg-gray-800 dark:hover:bg-gray-750">
+        <div class="flex mb-4">
+          <div class="relative">
+            <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" 
+                 alt="Tech Entrepreneur" 
+                 class="w-16 h-16 rounded-full object-cover ring-4 ring-blue-100 dark:ring-blue-900">
+            <div class="absolute -bottom-1 -right-1 bg-blue-500 text-white p-1 rounded-full">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="flex text-yellow-400 mb-4">
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+        </div>
+        <p class="text-gray-600 mb-6 italic dark:text-gray-300">
+          "Maphixz transformed our IT infrastructure with their enterprise solutions. Their team delivered beyond expectations with 24/7 support."
+        </p>
+        <div>
+          <strong class="block font-semibold dark:text-white">Amara N.</strong>
+          <span class="text-sm text-gray-500 dark:text-gray-400">CTO, TechStart Inc.</span>
+        </div>
+      </div>
+      
+      <!-- Testimonial 2 -->
+      <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all dark:bg-gray-800 dark:hover:bg-gray-750">
+        <div class="flex mb-4">
+          <div class="relative">
+            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" 
+                 alt="IT Manager" 
+                 class="w-16 h-16 rounded-full object-cover ring-4 ring-blue-100 dark:ring-blue-900">
+            <div class="absolute -bottom-1 -right-1 bg-blue-500 text-white p-1 rounded-full">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="flex text-yellow-400 mb-4">
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+        </div>
+        <p class="text-gray-600 mb-6 italic dark:text-gray-300">
+          "Their data recovery service saved us from a major crisis. Professional, prompt, and priced fairly. Highly recommended for enterprise solutions."
+        </p>
+        <div>
+          <strong class="block font-semibold dark:text-white">Obinna K.</strong>
+          <span class="text-sm text-gray-500 dark:text-gray-400">IT Director, FirstBank</span>
+        </div>
+      </div>
+      
+      <!-- Testimonial 3 -->
+      <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all dark:bg-gray-800 dark:hover:bg-gray-750">
+        <div class="flex mb-4">
+          <div class="relative">
+            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=761&q=80" 
+                 alt="Software Developer" 
+                 class="w-16 h-16 rounded-full object-cover ring-4 ring-blue-100 dark:ring-blue-900">
+            <div class="absolute -bottom-1 -right-1 bg-blue-500 text-white p-1 rounded-full">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="flex text-yellow-400 mb-4">
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+        </div>
+        <p class="text-gray-600 mb-6 italic dark:text-gray-300">
+          "The custom software solution Maphixz developed streamlined our operations by 40%. Their technical expertise is unmatched in Nigeria."
+        </p>
+        <div>
+          <strong class="block font-semibold dark:text-white">Chioma E.</strong>
+          <span class="text-sm text-gray-500 dark:text-gray-400">CEO, LogisticsPro</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trust indicators -->
+    <div class="mt-16 pt-12 border-t border-gray-200 dark:border-gray-700">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div>
+          <div class="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">200+</div>
+          <div class="text-gray-600 dark:text-gray-300">Enterprise Clients</div>
+        </div>
+        <div>
+          <div class="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">24/7</div>
+          <div class="text-gray-600 dark:text-gray-300">Technical Support</div>
+        </div>
+        <div>
+          <div class="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">98%</div>
+          <div class="text-gray-600 dark:text-gray-300">Satisfaction Rate</div>
+        </div>
+        <div>
+          <div class="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">5.0</div>
+          <div class="text-gray-600 dark:text-gray-300">Average Rating</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Newsletter -->
+<section class="py-16 bg-gray-900 text-gray-100">
+  <div class="container mx-auto px-6">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">Our Location</h2>
+      <p class="text-lg text-gray-400 max-w-2xl mx-auto">Find your way to Maphixz Global Technologies in Benue, Nigeria</p>
+    </div>
+
+    <div class="flex flex-col lg:flex-row gap-8 items-center justify-center">
+      <!-- Map Container -->
+      <div class="w-full lg:w-2/3 h-96 lg:h-[500px] rounded-xl overflow-hidden shadow-lg border border-gray-700">
+        <iframe 
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d587.7097584737727!2d8.539246720177305!3d7.72340387867492!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x10508135b6190a59%3A0x37c66630a8388f2e!2sMaphixz%20Global%20Technologies!5e0!3m2!1sen!2sng!4v1751357046384!5m2!1sen!2sng" 
+          width="100%" 
+          height="100%" 
+          style="border:0;" 
+          allowfullscreen="" 
+          loading="lazy" 
+          referrerpolicy="no-referrer-when-downgrade"
+          class="w-full h-full"
+        ></iframe>
+      </div>
+
+      <!-- Address Card -->
+      <div class="w-full lg:w-1/3 bg-gray-800 p-8 rounded-xl border border-gray-700 shadow-lg">
+        <div class="space-y-6">
+          <div class="flex items-start gap-4">
+            <div class="mt-1 text-blue-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold">Maphixz Global Technologies</h3>
+              <p class="text-gray-400">Benue, Nigeria</p>
+              <p class="text-gray-500 text-sm mt-1">Coordinates: 7.7234° N, 8.5392° E</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4">
+            <div class="mt-1 text-blue-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div>
+              <h4 class="font-medium">Working Hours</h4>
+              <p class="text-gray-400">Monday - Friday: 8:00 AM - 5:00 PM</p>
+              <p class="text-gray-400">Weekends: Closed</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4">
+            <div class="mt-1 text-blue-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+              </svg>
+            </div>
+            <div>
+              <h4 class="font-medium">Contact</h4>
+              <p class="text-gray-400">+234 XXX XXX XXXX</p>
+              <p class="text-gray-400">info@maphixz.com</p>
+            </div>
+          </div>
+
+          <a 
+            href="https://www.google.com/maps/dir//Maphixz+Global+Technologies" 
+            target="_blank" 
+            class="inline-flex items-center justify-center px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors duration-300 mt-4 w-full"
+          >
+            Get Directions
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

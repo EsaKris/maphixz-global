@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% block title %}Shipping Policy | Lussoux Hairs{% endblock %}
+{% block content %}
+<section class="py-16 bg-gradient-to-b from-gray-50 to-white">
+    <div class="max-w-4xl mx-auto px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Shipping Policy</h1>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">Fast, reliable delivery for your Lussoux Hairs products</p>
+            <div class="w-24 h-1 bg-primary-500 mx-auto mt-6"></div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-lg p-8 md:p-10 mb-12">
+            <div class="prose max-w-none">
+                <div class="mb-10">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Order Processing & Delivery</h2>
+                    <p class="text-gray-700 mb-6">
+                        We carefully process all orders to ensure your Lussoux Hairs products arrive in perfect condition. Most orders are processed within 1-2 business days (excluding weekends and holidays).
+                    </p>
+                    
+                    <div class="grid md:grid-cols-3 gap-6 mb-8">
+                        <!-- Standard Shipping -->
+                        <div class="border border-gray-200 rounded-lg p-6 hover:border-primary-300 transition-colors">
+                            <div class="flex items-center mb-4">
+                                <div class="bg-primary-100 p-2 rounded-full mr-3">
+                                    <svg class="h-6 w-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
+                                    </svg>
+                                </div>
+                                <h3 class="text-lg font-medium text-gray-900">Standard Delivery</h3>
+                            </div>
+                            <ul class="space-y-2 text-gray-700 text-sm">
+                                <li class="flex items-start">
+                                    <svg class="h-4 w-4 text-primary-500 mr-1.5 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <span>3-5 business days</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="h-4 w-4 text-primary-500 mr-1.5 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <span>Economical shipping option</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="h-4 w-4 text-primary-500 mr-1.5 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <span>Tracking included</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Express Shipping -->
+                        <div class="border border-gray-200 rounded-lg p-6 hover:border-primary-300 transition-colors">
+                            <div class="flex items-center mb-4">
+                                <div class="bg-primary-100 p-2 rounded-full mr-3">
+                                    <svg class="h-6 w-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                    </svg>
+                                </div>
+                                <h3 class="text-lg font-medium text-gray-900">Express Delivery</h3>
+                            </div>
+                            <ul class="space-y-2 text-gray-700 text-sm">
+                                <li class="flex items-start">
+                                    <svg class="h-4 w-4 text-primary-500 mr-1.5 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <span>1-2 business days</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="h-4 w-4 text-primary-500 mr-1.5 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <span>Priority processing</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="h-4 w-4 text-primary-500 mr-1.5 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <span>Real-time tracking</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Store Pickup -->
+                        <div class="border border-gray-200 rounded-lg p-6 hover:border-primary-300 transition-colors">
+                            <div class="flex items-center mb-4">
+                                <div class="bg-primary-100 p-2 rounded-full mr-3">
+                                    <svg class="h-6 w-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    </svg>
+                                </div>
+                                <h3 class="text-lg font-medium text-gray-900">Store Pickup</h3>
+                            </div>
+                            <ul class="space-y-2 text-gray-700 text-sm">
+                                <li class="flex items-start">
+                                    <svg class="h-4 w-4 text-primary-500 mr-1.5 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <span>Ready in 1 business day</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="h-4 w-4 text-primary-500 mr-1.5 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <span>No shipping fees</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="h-4 w-4 text-primary-500 mr-1.5 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <span>Bring your order confirmation</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-10">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Shipping Details</h2>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-900 mb-3">Processing Time</h3>
+                            <p class="text-gray-700">
+                                All orders are processed within 1-2 business days (Monday-Friday, excluding public holidays) after receiving your order confirmation email. You will receive a shipping confirmation email with tracking information once your order ships.
+                            </p>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-900 mb-3">International Shipping</h3>
+                            <p class="text-gray-700">
+                                We currently ship to select international destinations. Delivery times vary by country (typically 7-14 business days). Customers are responsible for any customs duties or import taxes that may apply.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-blue-50 rounded-lg p-6">
+                    <h3 class="text-xl font-medium text-gray-800 mb-3">Need Shipping Help?</h3>
+                    <p class="text-gray-700 mb-4">
+                        For questions about your order status, shipping rates, or delivery times, our customer service team is happy to assist you.
+                    </p>
+                    <a href="{% url 'store:contact' %}" class="inline-flex items-center px-5 py-2.5 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
+                        Contact Our Shipping Team
+                        <svg class="ml-2 -mr-1 w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

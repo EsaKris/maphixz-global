@@ -1,0 +1,376 @@
+{% extends "admin/admin_base.html" %}
+
+{% block page_title %}Orders & Repairs{% endblock %}
+{% block page_subtitle %}Manage customer orders and repair requests{% endblock %}
+
+{% block admin_content %}
+<!-- Header -->
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+    <div>
+        <h2 class="text-2xl font-bold text-gray-900">Orders & Repairs Management</h2>
+        <p class="text-gray-600 mt-1">Track, process, and fulfill customer requests</p>
+    </div>
+    <div class="mt-4 sm:mt-0 flex space-x-3">
+        <button class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+            <i class="fas fa-file-export mr-2"></i>
+            Export Records
+        </button>
+    </div>
+</div>
+
+<!-- Tabs -->
+<div class="flex border-b border-gray-200 mb-6 overflow-x-auto">
+    <button id="ordersTab" class="px-4 py-2 font-medium text-blue-600 border-b-2 border-blue-600 whitespace-nowrap">
+        <i class="fas fa-shopping-cart mr-2"></i>
+        Sales Orders ({{ orders.paginator.count }})
+    </button>
+    <button id="repairsTab" class="px-4 py-2 font-medium text-gray-500 hover:text-gray-700 whitespace-nowrap">
+        <i class="fas fa-tools mr-2"></i>
+        Repair Requests ({{ repair_count }})
+    </button>
+</div>
+
+<!-- Filters -->
+<div class="bg-white rounded-xl shadow-sm p-4 md:p-6 border border-gray-100 mb-6">
+    <form method="get" class="flex flex-col md:flex-row md:items-end gap-4">
+        <!-- Search -->
+        <div class="flex-1">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Search</label>
+            <div class="relative">
+                <input type="text" name="search" value="{{ search }}" 
+                       placeholder="Order ID, customer, or laptop model..."
+                       class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+            </div>
+        </div>
+        
+        <!-- Status Filter -->
+        <div class="md:w-48">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+            <select name="status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                <option value="">All Statuses</option>
+                <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>Pending</option>
+                <option value="processing" {% if status_filter == 'processing' %}selected{% endif %}>Processing</option>
+                <option value="completed" {% if status_filter == 'completed' %}selected{% endif %}>Completed</option>
+                <option value="cancelled" {% if status_filter == 'cancelled' %}selected{% endif %}>Cancelled</option>
+            </select>
+        </div>
+        
+        <!-- Date Range -->
+        <div class="md:w-64">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Date Range</label>
+            <input type="date" name="date_from" value="{{ date_from }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+        </div>
+        
+        <!-- Filter Button -->
+        <div>
+            <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 w-full md:w-auto">
+                <i class="fas fa-filter mr-2"></i>
+                Apply Filters
+            </button>
+        </div>
+        
+        <!-- Clear Filters -->
+        {% if search or status_filter or date_from %}
+        <div>
+            <a href="{% url 'store:admin_orders' %}" class="px-4 py-2 text-gray-500 hover:text-gray-700 block text-center">
+                <i class="fas fa-times mr-2"></i>
+                Clear
+            </a>
+        </div>
+        {% endif %}
+    </form>
+</div>
+
+<!-- Orders Table (Responsive) -->
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200 hidden md:table">
+        <thead class="bg-gray-50">
+            <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Laptop Details</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            {% for order in orders %}
+            <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-{% if order.is_repair %}tools{% else %}shopping-cart{% endif %} text-blue-600"></i>
+                        </div>
+                        <div class="ml-4">
+                            <div class="text-sm font-medium text-gray-900">#{{ order.id }}</div>
+                            <div class="text-xs text-gray-500">
+                                {% if order.is_repair %}Repair{% else %}Sale{% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div>
+                        <div class="text-sm font-medium text-gray-900">{{ order.customer_name }}</div>
+                        <div class="text-xs text-gray-500">{{ order.customer_phone }}</div>
+                    </div>
+                </td>
+                <td class="px-6 py-4">
+                    <div class="text-sm text-gray-900">
+                        {% if order.is_repair %}
+                            {{ order.laptop_model }} ({{ order.laptop_issue }})
+                        {% else %}
+                            {{ order.items.first.product.name|default:"Laptop" }}
+                        {% endif %}
+                    </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm font-semibold text-gray-900">₦{{ order.total_amount }}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium
+                        {% if order.status == 'pending' %}bg-yellow-100 text-yellow-800
+                        {% elif order.status == 'processing' %}bg-blue-100 text-blue-800
+                        {% elif order.status == 'completed' %}bg-green-100 text-green-800
+                        {% elif order.status == 'cancelled' %}bg-red-100 text-red-800
+                        {% else %}bg-gray-100 text-gray-800{% endif %}">
+                        {{ order.get_status_display }}
+                    </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {{ order.created_at|date:"M d, Y" }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <div class="flex justify-end space-x-2">
+                        <a href="{% if order.is_repair %}{% url 'store:admin_repair_detail' order.id %}{% else %}{% url 'store:admin_order_detail' order.id %}{% endif %}" 
+                           class="text-blue-600 hover:text-blue-800 p-1">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        <a href="https://wa.me/{{ order.customer_phone }}" target="_blank"
+                           class="text-green-600 hover:text-green-800 p-1">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                        {% if order.status == 'pending' %}
+                        <button onclick="updateStatus('{{ order.id }}', 'processing')"
+                                class="text-blue-600 hover:text-blue-800 p-1">
+                            <i class="fas fa-check-circle"></i>
+                        </button>
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" class="px-6 py-12 text-center">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-shopping-cart text-4xl text-gray-300 mb-4"></i>
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">No orders found</h3>
+                        <p class="text-gray-500">
+                            {% if search or status_filter %}
+                                Try adjusting your search criteria
+                            {% else %}
+                                No orders have been placed yet
+                            {% endif %}
+                        </p>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <!-- Mobile Card View -->
+    <div class="md:hidden">
+        {% for order in orders %}
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 mb-4 p-4">
+            <div class="flex items-center mb-2">
+                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-{% if order.is_repair %}tools{% else %}shopping-cart{% endif %} text-blue-600"></i>
+                </div>
+                <div class="ml-4 flex-1">
+                    <div class="text-sm font-medium text-gray-900">#{{ order.id }}</div>
+                    <div class="text-xs text-gray-500">
+                        {% if order.is_repair %}Repair{% else %}Sale{% endif %}
+                    </div>
+                </div>
+                <div>
+                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium
+                        {% if order.status == 'pending' %}bg-yellow-100 text-yellow-800
+                        {% elif order.status == 'processing' %}bg-blue-100 text-blue-800
+                        {% elif order.status == 'completed' %}bg-green-100 text-green-800
+                        {% elif order.status == 'cancelled' %}bg-red-100 text-red-800
+                        {% else %}bg-gray-100 text-gray-800{% endif %}">
+                        {{ order.get_status_display }}
+                    </span>
+                </div>
+            </div>
+            <div class="mb-2">
+                <div class="text-xs text-gray-500">Customer</div>
+                <div class="text-sm font-medium text-gray-900">{{ order.customer_name }}</div>
+                <div class="text-xs text-gray-500">{{ order.customer_phone }}</div>
+            </div>
+            <div class="mb-2">
+                <div class="text-xs text-gray-500">Laptop Details</div>
+                <div class="text-sm text-gray-900">
+                    {% if order.is_repair %}
+                        {{ order.laptop_model }} ({{ order.laptop_issue }})
+                    {% else %}
+                        {{ order.items.first.product.name|default:"Laptop" }}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="mb-2 flex justify-between">
+                <div>
+                    <div class="text-xs text-gray-500">Amount</div>
+                    <div class="text-sm font-semibold text-gray-900">₦{{ order.total_amount }}</div>
+                </div>
+                <div>
+                    <div class="text-xs text-gray-500">Date</div>
+                    <div class="text-sm text-gray-900">{{ order.created_at|date:"M d, Y" }}</div>
+                </div>
+            </div>
+            <div class="flex justify-end space-x-2 mt-2">
+                <a href="{% if order.is_repair %}{% url 'store:admin_repair_detail' order.id %}{% else %}{% url 'store:admin_order_detail' order.id %}{% endif %}" 
+                   class="text-blue-600 hover:text-blue-800 p-1">
+                    <i class="fas fa-eye"></i>
+                </a>
+                <a href="https://wa.me/{{ order.customer_phone }}" target="_blank"
+                   class="text-green-600 hover:text-green-800 p-1">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+                {% if order.status == 'pending' %}
+                <button onclick="updateStatus('{{ order.id }}', 'processing')"
+                        class="text-blue-600 hover:text-blue-800 p-1">
+                    <i class="fas fa-check-circle"></i>
+                </button>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 mb-4 p-6 text-center">
+            <i class="fas fa-shopping-cart text-4xl text-gray-300 mb-4"></i>
+            <h3 class="text-lg font-medium text-gray-900 mb-2">No orders found</h3>
+            <p class="text-gray-500">
+                {% if search or status_filter %}
+                    Try adjusting your search criteria
+                {% else %}
+                    No orders have been placed yet
+                {% endif %}
+            </p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Pagination -->
+{% if orders.has_other_pages %}
+<div class="mt-6 flex flex-col sm:flex-row items-center justify-between">
+    <div class="text-sm text-gray-500 mb-4 sm:mb-0">
+        Showing {{ orders.start_index }} to {{ orders.end_index }} of {{ orders.paginator.count }} records
+    </div>
+    
+    <div class="flex flex-wrap space-x-2">
+        {% if orders.has_previous %}
+            <a href="?page={{ orders.previous_page_number }}&search={{ search }}&status={{ status_filter }}&date_from={{ date_from }}" 
+               class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+                <i class="fas fa-chevron-left mr-1"></i>
+                Previous
+            </a>
+        {% endif %}
+        
+        {% for num in orders.paginator.page_range %}
+            {% if orders.number == num %}
+                <span class="px-3 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded-lg">
+                    {{ num }}
+                </span>
+            {% elif num > orders.number|add:'-3' and num < orders.number|add:'3' %}
+                <a href="?page={{ num }}&search={{ search }}&status={{ status_filter }}&date_from={{ date_from }}" 
+                   class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+                    {{ num }}
+                </a>
+            {% endif %}
+        {% endfor %}
+        
+        {% if orders.has_next %}
+            <a href="?page={{ orders.next_page_number }}&search={{ search }}&status={{ status_filter }}&date_from={{ date_from }}" 
+               class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+                Next
+                <i class="fas fa-chevron-right ml-1"></i>
+            </a>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+<!-- Quick Stats -->
+<div class="mt-8 grid grid-cols-1 md:grid-cols-4 gap-4">
+    <!-- Pending Orders -->
+    <div class="bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-xl p-4 text-white">
+        <div class="flex items-center">
+            <i class="fas fa-clock text-2xl mr-3"></i>
+            <div>
+                <p class="text-sm">Pending Orders</p>
+                <p class="text-xl font-bold">{{ pending_count }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Processing Orders -->
+    <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-4 text-white">
+        <div class="flex items-center">
+            <i class="fas fa-cog text-2xl mr-3"></i>
+            <div>
+                <p class="text-sm">Processing</p>
+                <p class="text-xl font-bold">{{ processing_count }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Today's Revenue -->
+    <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-4 text-white">
+        <div class="flex items-center">
+            <i class="fas fa-dollar-sign text-2xl mr-3"></i>
+            <div>
+                <p class="text-sm">Today's Revenue</p>
+                <p class="text-xl font-bold">₦{{ today_revenue }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Monthly Revenue -->
+    <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-4 text-white">
+        <div class="flex items-center">
+            <i class="fas fa-chart-line text-2xl mr-3"></i>
+            <div>
+                <p class="text-sm">Monthly Revenue</p>
+                <p class="text-xl font-bold">₦{{ monthly_revenue }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function updateStatus(orderId, status) {
+    if (confirm('Are you sure you want to update this order status?')) {
+        fetch(`/admin/orders/${orderId}/update-status/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({status: status})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error updating status: ' + data.error);
+            }
+        });
+    }
+}
+</script>
+{% endblock %}

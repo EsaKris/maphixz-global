@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-purple-100 dark:from-gray-900 dark:to-gray-800 px-4 overflow-hidden">
+  <!-- Animated floating laptop parts -->
+  <div class="absolute top-1/4 left-1/4 w-16 h-16 rounded-full bg-blue-200 opacity-20 dark:bg-blue-900 filter blur-xl animate-float1"></div>
+  <div class="absolute top-1/3 right-1/4 w-24 h-24 rounded-full bg-purple-200 opacity-20 dark:bg-purple-900 filter blur-xl animate-float2"></div>
+  <div class="absolute bottom-1/4 left-1/3 w-20 h-20 rounded-full bg-indigo-200 opacity-20 dark:bg-indigo-900 filter blur-xl animate-float3"></div>
+  <div class="absolute bottom-1/3 right-1/3 w-28 h-28 rounded-full bg-pink-200 opacity-20 dark:bg-pink-900 filter blur-xl animate-float4"></div>
+  
+  <div class="relative z-10 text-center max-w-2xl">
+    <!-- Glitch effect on 404 text -->
+    <div class="glitch-container mb-6">
+      <h1 class="glitch text-8xl font-bold text-blue-600 dark:text-blue-400" data-text="404">404</h1>
+    </div>
+    
+    <h2 class="text-3xl md:text-4xl font-semibold mb-4 text-gray-800 dark:text-white">
+      <span class="tech-gradient-text">Lost in Cyberspace</span>
+    </h2>
+    
+    <p class="text-gray-500 mb-8 dark:text-gray-300 text-lg">
+      The page you're looking for has either been abducted by aliens, <br>
+      lost in a black hole, or never existed in the first place.
+    </p>
+    
+    <!-- Interactive computer illustration with hover effects -->
+    <div class="relative w-64 h-64 mx-auto mb-8 cursor-pointer transform hover:scale-105 transition-transform duration-300">
+      <div class="absolute inset-0 flex items-center justify-center">
+        <div class="w-48 h-32 bg-gray-200 dark:bg-gray-700 rounded-lg shadow-lg border-t-4 border-blue-400 dark:border-blue-600 relative overflow-hidden">
+          <!-- Screen content -->
+          <div class="absolute inset-0 bg-gradient-to-br from-blue-100 to-purple-100 dark:from-gray-800 dark:to-gray-900 flex items-center justify-center">
+            <div class="text-center p-2">
+              <div class="text-4xl font-mono text-red-500 animate-pulse">404</div>
+              <div class="text-xs font-mono text-gray-500 dark:text-gray-400 mt-1">ERROR: PAGE_NOT_FOUND</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Keyboard -->
+      <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-56 h-6 bg-gray-300 dark:bg-gray-600 rounded-sm"></div>
+      <!-- Trackpad -->
+      <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-24 h-16 bg-gray-400 dark:bg-gray-500 rounded-sm"></div>
+    </div>
+    
+    <div class="flex flex-col sm:flex-row justify-center gap-4">
+      <a href="{% url 'store:home' %}" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all group">
+        <i class="fas fa-home mr-2 group-hover:animate-bounce"></i> Back to Homepage
+      </a>
+      <a href="{% url 'store:product_list' %}" class="inline-flex items-center px-6 py-3 bg-gray-800 text-white font-medium rounded-lg hover:bg-gray-700 transition-all group dark:bg-gray-700 dark:hover:bg-gray-600">
+        <i class="fas fa-laptop-code mr-2 group-hover:animate-pulse"></i> Browse Products
+      </a>
+    </div>
+    
+    <!-- Easter egg - click to reveal joke -->
+    <div class="mt-8 text-center">
+      <button id="easter-egg" class="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+        Feeling lost? Click here for tech support
+      </button>
+      <div id="tech-joke" class="hidden mt-2 text-sm text-gray-500 dark:text-gray-400"></div>
+    </div>
+  </div>
+  
+  <!-- Floating astronaut illustration -->
+  <div class="absolute bottom-8 right-8 w-24 h-24 opacity-70 hover:opacity-100 transition-opacity cursor-pointer animate-bounce-slow">
+    <img src="{% static 'images/astronaut.svg' %}" alt="Astronaut" onerror="this.style.display='none'">
+  </div>
+</div>
+
+<style>
+  /* Custom animations */
+  @keyframes float1 {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(20px, 20px) rotate(5deg); }
+  }
+  @keyframes float2 {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-15px, 15px) rotate(-5deg); }
+  }
+  @keyframes float3 {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(15px, -10px) rotate(3deg); }
+  }
+  @keyframes float4 {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-20px, -5px) rotate(-3deg); }
+  }
+  @keyframes bounce-slow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+  
+  .animate-float1 { animation: float1 8s ease-in-out infinite; }
+  .animate-float2 { animation: float2 10s ease-in-out infinite; }
+  .animate-float3 { animation: float3 12s ease-in-out infinite; }
+  .animate-float4 { animation: float4 9s ease-in-out infinite; }
+  .animate-bounce-slow { animation: bounce-slow 3s ease-in-out infinite; }
+  
+  /* Glitch effect */
+  .glitch-container {
+    position: relative;
+    display: inline-block;
+  }
+  .glitch {
+    position: relative;
+  }
+  .glitch::before, .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.8;
+  }
+  .glitch::before {
+    color: #8b5cf6;
+    z-index: -1;
+    animation: glitch-effect 3s infinite;
+  }
+  .glitch::after {
+    color: #38bdf8;
+    z-index: -2;
+    animation: glitch-effect 2s infinite reverse;
+  }
+  @keyframes glitch-effect {
+    0% { transform: translate(0); }
+    20% { transform: translate(-3px, 3px); }
+    40% { transform: translate(-3px, -3px); }
+    60% { transform: translate(3px, 3px); }
+    80% { transform: translate(3px, -3px); }
+    100% { transform: translate(0); }
+  }
+</style>
+
+<script>
+  // Easter egg - tech jokes
+  const jokes = [
+    "Why do programmers prefer dark mode? Because light attracts bugs!",
+    "Why was the JavaScript developer sad? Because he didn't know how to 'null' his feelings.",
+    "How many programmers does it take to change a light bulb? None, that's a hardware problem.",
+    "Why do Python developers need glasses? Because they can't C#!",
+    "What do you call a programmer from Finland? Nerdic.",
+    "Why don't programmers like nature? It has too many bugs.",
+    "How do you comfort a JavaScript bug? You console it.",
+    "Why did the developer go broke? Because he used up all his cache."
+  ];
+  
+  document.getElementById('easter-egg').addEventListener('click', function() {
+    const jokeElement = document.getElementById('tech-joke');
+    if (jokeElement.classList.contains('hidden')) {
+      jokeElement.textContent = jokes[Math.floor(Math.random() * jokes.length)];
+      jokeElement.classList.remove('hidden');
+    } else {
+      jokeElement.classList.add('hidden');
+    }
+  });
+  
+  // Make the astronaut interactive
+  document.querySelector('.absolute.bottom-8.right-8').addEventListener('click', function() {
+    alert("🚀 Houston, we have a 404 problem! But don't worry, our tech team is on it!");
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,312 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8 max-w-7xl">
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-light-100 mb-8">Complete Your Purchase</h1>
+
+    {% if cart_items %}
+        <form method="POST" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {% csrf_token %}
+            
+            <!-- Customer & Delivery Information -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Customer Information -->
+                <div class="bg-white dark:bg-dark-700 p-6 rounded-xl shadow-sm dark:shadow-dark-800">
+                    <h2 class="text-xl font-semibold text-gray-900 dark:text-light-100 mb-4 flex items-center">
+                        <i class="fas fa-user-circle mr-2 text-primary-600 dark:text-primary-400"></i>
+                        Customer Information
+                    </h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-light-400 mb-1">Full Name</label>
+                            <input type="text" name="customer_name" required 
+                                   class="w-full px-4 py-3 border border-gray-200 dark:border-dark-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-dark-800 dark:text-light-100">
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-light-400 mb-1">Email</label>
+                                <input type="email" name="customer_email" required 
+                                       class="w-full px-4 py-3 border border-gray-200 dark:border-dark-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-dark-800 dark:text-light-100">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-light-400 mb-1">Phone</label>
+                                <input type="tel" name="customer_phone" required 
+                                       class="w-full px-4 py-3 border border-gray-200 dark:border-dark-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-dark-800 dark:text-light-100">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Delivery Information -->
+                <div class="bg-white dark:bg-dark-700 p-6 rounded-xl shadow-sm dark:shadow-dark-800">
+                    <h2 class="text-xl font-semibold text-gray-900 dark:text-light-100 mb-4 flex items-center">
+                        <i class="fas fa-truck mr-2 text-primary-600 dark:text-primary-400"></i>
+                        Delivery Information
+                    </h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-light-400 mb-1">Delivery Address</label>
+                            <textarea name="delivery_address" required rows="3" 
+                                    class="w-full px-4 py-3 border border-gray-200 dark:border-dark-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-dark-800 dark:text-light-100"></textarea>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-light-400 mb-1">City</label>
+                                <input type="text" name="delivery_city" required 
+                                       class="w-full px-4 py-3 border border-gray-200 dark:border-dark-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-dark-800 dark:text-light-100">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-light-400 mb-1">State</label>
+                                <input type="text" name="delivery_state" required 
+                                       class="w-full px-4 py-3 border border-gray-200 dark:border-dark-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-dark-800 dark:text-light-100">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-light-400 mb-1">Postal Code</label>
+                                <input type="text" name="delivery_postal_code" 
+                                       class="w-full px-4 py-3 border border-gray-200 dark:border-dark-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-dark-800 dark:text-light-100">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-light-400 mb-1">Delivery Method</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center p-3 border border-gray-200 dark:border-dark-600 rounded-lg hover:border-primary-500 dark:hover:border-primary-500 cursor-pointer">
+                                    <input type="radio" name="delivery_method" value="standard" required class="mr-3 h-5 w-5 text-primary-600 dark:text-primary-400 focus:ring-primary-500">
+                                    <div>
+                                        <span class="block font-medium dark:text-light-200">Standard Delivery</span>
+                                        <span class="block text-sm text-gray-500 dark:text-light-500">3-5 business days - Free</span>
+                                    </div>
+                                </label>
+                                <label class="flex items-center p-3 border border-gray-200 dark:border-dark-600 rounded-lg hover:border-primary-500 dark:hover:border-primary-500 cursor-pointer">
+                                    <input type="radio" name="delivery_method" value="express" required class="mr-3 h-5 w-5 text-primary-600 dark:text-primary-400 focus:ring-primary-500">
+                                    <div>
+                                        <span class="block font-medium dark:text-light-200">Express Delivery</span>
+                                        <span class="block text-sm text-gray-500 dark:text-light-500">1-2 business days - ₦2,500</span>
+                                    </div>
+                                </label>
+                                <label class="flex items-center p-3 border border-gray-200 dark:border-dark-600 rounded-lg hover:border-primary-500 dark:hover:border-primary-500 cursor-pointer">
+                                    <input type="radio" name="delivery_method" value="pickup" required class="mr-3 h-5 w-5 text-primary-600 dark:text-primary-400 focus:ring-primary-500">
+                                    <div>
+                                        <span class="block font-medium dark:text-light-200">Store Pickup</span>
+                                        <span class="block text-sm text-gray-500 dark:text-light-500">Pick up at our Lagos office</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-light-400 mb-1">Delivery Notes (Optional)</label>
+                            <textarea name="delivery_notes" rows="2" 
+                                    class="w-full px-4 py-3 border border-gray-200 dark:border-dark-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-dark-800 dark:text-light-100"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Summary & Payment -->
+            <div>
+                <div class="bg-white dark:bg-dark-700 p-6 rounded-xl shadow-sm dark:shadow-dark-800 sticky top-4">
+                    <h2 class="text-xl font-semibold text-gray-900 dark:text-light-100 mb-4 flex items-center">
+                        <i class="fas fa-receipt mr-2 text-primary-600 dark:text-primary-400"></i>
+                        Order Summary
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <!-- Cart Items -->
+                        <div class="max-h-96 overflow-y-auto pr-2">
+                            {% for item in cart_items %}
+                            <div class="flex justify-between py-3 border-b border-gray-200 dark:border-dark-600">
+                                <div class="flex items-start space-x-3">
+                                    <div class="w-16 h-16 bg-gray-100 dark:bg-dark-600 rounded-lg overflow-hidden flex-shrink-0">
+                                        {% if item.product.image %}
+                                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="w-full h-full object-contain">
+                                        {% else %}
+                                            <div class="w-full h-full flex items-center justify-center text-gray-400 dark:text-dark-400">
+                                                <i class="fas fa-laptop"></i>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div>
+                                        <p class="font-medium dark:text-light-200">{{ item.product.name }}</p>
+                                        <p class="text-sm text-gray-500 dark:text-light-500">Qty: {{ item.quantity }}</p>
+                                        {% if item.product.is_refurbished %}
+                                        <span class="inline-block mt-1 px-2 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs rounded-full">
+                                            Refurbished
+                                        </span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <p class="font-medium dark:text-light-200">${{ item.subtotal }}</p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        
+                        <!-- Order Totals -->
+                        <div class="space-y-3 pt-2">
+                            <div class="flex justify-between text-gray-600 dark:text-light-400">
+                                <span>Subtotal</span>
+                                <span>${{ cart.subtotal }}</span>
+                            </div>
+                            <div class="flex justify-between text-gray-600 dark:text-light-400">
+                                <span>Delivery Fee</span>
+                                <span id="delivery-fee">Calculated at next step</span>
+                            </div>
+                            <div class="flex justify-between text-lg font-semibold pt-2 border-t border-gray-200 dark:border-dark-600">
+                                <span>Total</span>
+                                <span id="order-total">${{ cart.total_price }}</span>
+                            </div>
+                            
+                            <!-- Currency Converter -->
+                            <div class="pt-4">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-light-400 mb-2">Select Currency</label>
+                                <select id="currency-select" class="w-full px-4 py-3 border border-gray-200 dark:border-dark-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-dark-800 dark:text-light-100">
+                                    <option value="USD">US Dollar (USD)</option>
+                                    <option value="NGN">Nigerian Naira (NGN)</option>
+                                    <option value="GBP">British Pound (GBP)</option>
+                                </select>
+                                <div id="converted-amount" class="text-sm text-gray-500 dark:text-light-500 mt-2"></div>
+                            </div>
+                        </div>
+
+                            <!-- Payment Method -->
+                            <div class="pt-4">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-light-400 mb-3">Payment Method</label>
+                                <div class="space-y-3">
+                                    <div class="p-3 border border-gray-200 dark:border-dark-600 rounded-lg">
+                                        <div class="flex items-start">
+                                            <input type="radio" name="payment_method" value="online" id="online_payment" class="mt-1 mr-3 h-5 w-5 text-primary-600 dark:text-primary-400 focus:ring-primary-500" disabled>
+                                            <div>
+                                                <span class="block font-medium dark:text-light-200">Online Payment</span>
+                                                <span class="block text-sm text-gray-500 dark:text-light-500">Pay with card, bank transfer, or USSD</span>
+                                                <div class="flex mt-2 space-x-2">
+                                                    <img src="{% static 'images/visa.png' %}" alt="Visa" class="h-6">
+                                                    <img src="{% static 'images/mastercard.png' %}" alt="Mastercard" class="h-6">
+                                                    <img src="{% static 'images/verve.png' %}" alt="Verve" class="h-6">
+                                                </div>
+                                                <button type="button" onclick="alert('Online payment coming soon!')" class="mt-2 text-sm text-primary-600 dark:text-primary-400 hover:underline">
+                                                    Online payment coming soon...
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <label class="flex items-start p-3 border border-gray-200 dark:border-dark-600 rounded-lg hover:border-primary-500 dark:hover:border-primary-500 cursor-pointer">
+                                        <input type="radio" name="payment_method" value="whatsapp" required class="mt-1 mr-3 h-5 w-5 text-primary-600 dark:text-primary-400 focus:ring-primary-500">
+                                        <div>
+                                            <span class="block font-medium dark:text-light-200">WhatsApp Payment</span>
+                                            <span class="block text-sm text-gray-500 dark:text-light-500">Chat with our sales team to complete payment</span>
+                                        </div>
+                                    </label>
+                                    
+                                    <div class="p-3 border border-gray-200 dark:border-dark-600 rounded-lg">
+                                        <div class="flex items-start">
+                                            <input type="radio" name="payment_method" value="installment" id="installment_payment" class="mt-1 mr-3 h-5 w-5 text-primary-600 dark:text-primary-400 focus:ring-primary-500" disabled>
+                                            <div>
+                                                <span class="block font-medium dark:text-light-200">Installment Plan</span>
+                                                <span class="block text-sm text-gray-500 dark:text-light-500">Pay in 3-6 monthly installments (subject to approval)</span>
+                                                <button type="button" onclick="alert('Installment payment coming soon!')" class="mt-2 text-sm text-primary-600 dark:text-primary-400 hover:underline">
+                                                    Installment payment coming soon...
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <!-- Place Order Button -->
+                        <button type="submit" 
+                                class="w-full mt-6 bg-primary-600 hover:bg-primary-700 text-white py-3 rounded-lg font-medium transition duration-200 flex items-center justify-center dark:bg-primary-700 dark:hover:bg-primary-600">
+                            <i class="fas fa-lock mr-2"></i> Secure Checkout
+                        </button>
+                        
+                        <!-- Security Assurance -->
+                        <div class="flex items-center justify-center mt-4 text-xs text-gray-500 dark:text-light-500">
+                            <i class="fas fa-shield-alt mr-2 text-green-500"></i>
+                            <span>100% Secure Payment | SSL Encrypted</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    {% else %}
+        <!-- Empty Cart -->
+        <div class="text-center py-12 bg-white dark:bg-dark-700 rounded-xl shadow-sm dark:shadow-dark-800">
+            <div class="mx-auto h-24 w-24 text-gray-400 dark:text-dark-400 flex items-center justify-center">
+                <i class="fas fa-shopping-cart text-5xl"></i>
+            </div>
+            <h3 class="mt-4 text-lg font-medium text-gray-900 dark:text-light-100">Your cart is empty</h3>
+            <p class="mt-2 text-gray-500 dark:text-light-500 mb-6">Browse our collection to find the perfect tech products</p>
+            <a href="{% url 'store:product_list' %}" 
+               class="inline-block px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition duration-300 dark:bg-primary-700 dark:hover:bg-primary-600">
+                <i class="fas fa-arrow-left mr-2"></i> Continue Shopping
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+<script>
+// Currency Conversion
+document.getElementById('currency-select').addEventListener('change', function() {
+    const currency = this.value;
+    const total = parseFloat('{{ cart.total_price }}');
+    let convertedAmount = '';
+    let rate = 1;
+    
+    // Sample conversion rates (in a real app, fetch from API)
+    const rates = {
+        'NGN': 1500,  // 1 USD = 1500 NGN
+        'GBP': 0.8     // 1 USD = 0.8 GBP
+    };
+    
+    if (currency === 'NGN') {
+        convertedAmount = '₦' + (total * rates.NGN).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        rate = rates.NGN;
+    } else if (currency === 'GBP') {
+        convertedAmount = '£' + (total * rates.GBP).toFixed(2);
+        rate = rates.GBP;
+    } else {
+        convertedAmount = '$' + total.toFixed(2);
+    }
+    
+    document.getElementById('converted-amount').textContent = 
+        `Approx. ${convertedAmount} (Rate: 1 USD = ${currency === 'NGN' ? '₦' : currency === 'GBP' ? '£' : '$'}${rate})`;
+});
+
+// Delivery Method Selection
+document.querySelectorAll('input[name="delivery_method"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        const deliveryFeeElement = document.getElementById('delivery-fee');
+        const totalElement = document.getElementById('order-total');
+        const subtotal = parseFloat('{{ cart.subtotal }}');
+        let deliveryFee = 0;
+        
+        if (this.value === 'express') {
+            deliveryFee = 5500; // NGN 5500 for express delivery
+            deliveryFeeElement.textContent = '₦5,500';
+        } else if (this.value === 'pickup') {
+            deliveryFee = 0;
+            deliveryFeeElement.textContent = 'Free';
+        } else {
+            deliveryFee = 0; // Free standard delivery
+            deliveryFeeElement.textContent = 'Free';
+        }
+        
+        // Update total (in a real app, this would be more sophisticated)
+        totalElement.textContent = this.value === 'express' ? 
+            '$' + (subtotal + (deliveryFee / 1500)).toFixed(2) : 
+            '$' + subtotal.toFixed(2);
+    });
+});
+
+// Form submission with validation
+document.querySelector('form').addEventListener('submit', function(e) {
+    const paymentMethod = document.querySelector('input[name="payment_method"]:checked');
+    if (!paymentMethod || (paymentMethod.value !== 'whatsapp')) {
+        e.preventDefault();
+        if (!paymentMethod) {
+            alert('Please select a payment method');
+        } else {
+            alert('Please select WhatsApp Payment as your payment method');
+        }
+    }
+});
+</script>
+{% endblock %}
